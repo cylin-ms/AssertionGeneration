@@ -63,6 +63,17 @@ If you want to re-run the matching process using a local LLM:
     python compute_assertion_matches.py --input docs/output_v2.jsonl --output docs/output_v2_with_matches.jsonl --model gpt-oss:20b
     ```
 
+## Walkthrough
+
+Once the application is running, you can navigate through the generated plans and verify the assertions.
+
+1. **Select a Plan**: On the left sidebar, you will see a list of generated workback plans (labeled by their utterance or ID). Click on one to view its details.
+2. **View Coverage**: The dashboard displays a summary of how many assertions were successfully matched against the generated response.
+3. **Inspect Assertions**:
+    - The main view shows the **Generated Response** on one side and the list of **Assertions** on the other.
+    - **Click on an Assertion**: When you select a specific assertion card, the tool will automatically **highlight the corresponding text** in the generated response that supports that assertion.
+    - This allows you to quickly verify if the plan contains the specific details requested (e.g., dates, stakeholders, tasks).
+
 ## Screenshots
 
 ### Dashboard Overview
