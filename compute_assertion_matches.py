@@ -16,25 +16,25 @@ def load_qwen_model():
     Returns a tuple of (None, model_name) for API-based usage.
     """
     print("Connecting to Ollama API...")
-    model_name = "qwen3:30b"  # Default model, can be changed via --model argument
+    model_name = "gpt-oss:20b"  # Default model, can be changed via --model argument
     
     # Test connection
     try:
         response = requests.post(
-            'http://localhost:11434/api/generate',
+            'http://192.168.2.163:11434/api/generate',
             json={
                 'model': model_name,
                 'prompt': 'test',
                 'stream': False
             },
-            timeout=5
+            timeout=30
         )
         if response.status_code == 200:
             print(f"✓ Successfully connected to Ollama with model: {model_name}")
         else:
             print(f"Warning: Ollama returned status {response.status_code}")
     except requests.exceptions.RequestException as e:
-        print(f"Error: Could not connect to Ollama at http://localhost:11434")
+        print(f"Error: Could not connect to Ollama at http://192.168.2.163:11434")
         print(f"Make sure Ollama is running: 'ollama serve'")
         print(f"And the model is pulled: 'ollama pull {model_name}'")
         raise
@@ -67,7 +67,7 @@ Return ONLY a JSON object with scores (0.0-1.0) for relevant passages (>= 0.3):
 
     try:
         response = requests.post(
-            'http://localhost:11434/api/generate',
+            'http://192.168.2.163:11434/api/generate',
             json={
                 'model': model_name,
                 'prompt': prompt,
@@ -214,8 +214,8 @@ def main():
     )
     parser.add_argument(
         '--model',
-        default='qwen3:30b',
-        help='Ollama model name (default: qwen3:30b)'
+        default='gpt-oss:20b',
+        help='Ollama model name (default: gpt-oss:20b)'
     )
     
     args = parser.parse_args()
@@ -226,7 +226,7 @@ def main():
     try:
         model, model_name = load_qwen_model()
         # Override with command line argument if provided
-        if args.model != 'qwen3:30b':
+        if args.model != 'gpt-oss:20b':
             model_name = args.model
             print(f"Using model: {model_name}")
     except Exception as e:

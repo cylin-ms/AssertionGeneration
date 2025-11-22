@@ -4,9 +4,9 @@ This system uses a two-phase approach to match assertion evidence in generated r
 
 ## Architecture
 
-### Phase 1: Offline Pre-computation (Using Qwen 8B)
+### Phase 1: Offline Pre-computation (Using gpt-oss:20b)
 - **Script**: `compute_assertion_matches.py`
-- **Model**: Qwen2.5-7B-Instruct (or similar 8B model)
+- **Model**: gpt-oss:20b (or similar)
 - **Purpose**: Use a more powerful LLM to analyze full assertions and find supporting evidence in responses
 - **Output**: Enhanced JSONL file with `matched_segments` added to each assertion
 
@@ -35,7 +35,7 @@ brew install ollama
 ollama serve
 
 # In another terminal, pull the model
-ollama pull qwen3:30b
+ollama pull gpt-oss:20b
 ```
 
 ### Step 2: Run Offline Matching
@@ -44,7 +44,7 @@ ollama pull qwen3:30b
 # Install Python dependencies
 pip install requests
 
-# Run the matching script (connects to Ollama on localhost:11434)
+# Run the matching script (connects to Ollama on 192.168.2.163:11434)
 python compute_assertion_matches.py --input docs/output_v2.jsonl --output docs/output_v2_with_matches.jsonl
 
 # Optional: Use a different model
