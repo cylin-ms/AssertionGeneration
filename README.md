@@ -12,8 +12,7 @@ The system consists of two main components:
 ## Prerequisites
 
 - Python 3.10+
-- [Ollama](https://ollama.com/) (for offline matching)
-- Access to a supported LLM model (e.g., `gpt-oss:20b`, `qwen3-vl:30b`)
+- [Ollama](https://ollama.com/) (Optional: only required if you want to re-compute matches)
 
 ## Setup
 
@@ -37,33 +36,32 @@ The system consists of two main components:
     pip install -r requirements.txt
     ```
 
-4. **Configure Ollama**
-    Ensure your Ollama server is running and accessible.
-
-    ```bash
-    # Example: Pull the model you intend to use
-    ollama pull gpt-oss:20b
-    ```
-
 ## Usage
 
-### 1. Compute Assertion Matches
+### Visualize Results
 
-Run the offline script to analyze the generated output and find matches for assertions.
-
-```bash
-python compute_assertion_matches.py --input docs/output_v2.jsonl --output docs/output_v2_with_matches.jsonl --model gpt-oss:20b
-```
-
-### 2. Visualize Results
-
-Launch the Streamlit app to view the results.
+The assertion matches have already been pre-computed and saved in `docs/output_v2_with_matches.jsonl`. You can visualize them directly:
 
 ```bash
 streamlit run visualize_output.py
 ```
 
 Open your browser to `http://localhost:8501`.
+
+### (Optional) Re-compute Assertion Matches
+
+If you want to re-run the matching process using a local LLM:
+
+1.  **Configure Ollama**: Ensure your Ollama server is running and accessible.
+    ```bash
+    # Example: Pull the model you intend to use
+    ollama pull gpt-oss:20b
+    ```
+
+2.  **Run the matching script**:
+    ```bash
+    python compute_assertion_matches.py --input docs/output_v2.jsonl --output docs/output_v2_with_matches.jsonl --model gpt-oss:20b
+    ```
 
 ## Screenshots
 
