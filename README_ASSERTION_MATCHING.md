@@ -44,7 +44,7 @@ ollama pull gpt-oss:20b
 
 ```bash
 # Install Python dependencies
-pip install requests
+pip install -r requirements.txt
 
 # Run the matching script (connects to Ollama on configured host)
 python compute_assertion_matches.py --input docs/output_v2.jsonl --output docs/output_v2_with_matches.jsonl --model gpt-oss:20b
@@ -56,6 +56,7 @@ python compute_assertion_matches.py --model llama3.2:latest
 ### Step 3: Visualize Results
 
 ```bash
+# Run the visualization app
 streamlit run visualize_output.py
 ```
 
