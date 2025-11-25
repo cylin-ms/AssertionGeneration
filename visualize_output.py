@@ -2,6 +2,8 @@ import streamlit as st
 import json
 import os
 import re
+import time
+from datetime import datetime
 
 # Page Config
 st.set_page_config(
@@ -11,8 +13,263 @@ st.set_page_config(
 )
 
 # Paths to the files
-OUTPUT_FILE_PATH = os.path.join("docs", "output_v2_with_matches.jsonl")  # Use pre-computed matches
+# Updated to use new format (11_25_output.jsonl) which uses 'justification' instead of 'reasoning'
+OUTPUT_FILE_PATH = os.path.join("docs", "11_25_output.jsonl")  # New format with justification/sourceID
 INPUT_FILE_PATH = os.path.join("docs", "LOD_1121.jsonl")
+ANNOTATION_SAVE_PATH = os.path.join("docs", "annotations_temp.json")
+ANNOTATION_EXPORT_PATH = os.path.join("docs", "annotated_output.jsonl")
+
+# ====== ANNOTATION SYSTEM ======
+def init_annotation_state():
+    """Initialize annotation-related session state variables."""
+    if "annotations" not in st.session_state:
+        st.session_state.annotations = {}  # {utterance: {assertion_idx: {is_good: bool, revision: str, original: str}}}
+    if "new_assertions" not in st.session_state:
+        st.session_state.new_assertions = {}  # {utterance: [{text, level, justification}]}
+    if "last_save_time" not in st.session_state:
+        st.session_state.last_save_time = time.time()
+    if "annotation_modified" not in st.session_state:
+        st.session_state.annotation_modified = False
+    
+    # Try to load existing annotations from temp file
+    if os.path.exists(ANNOTATION_SAVE_PATH):
+        try:
+            with open(ANNOTATION_SAVE_PATH, 'r', encoding='utf-8') as f:
+                saved = json.load(f)
+                if "annotations" in saved:
+                    st.session_state.annotations = saved["annotations"]
+                if "new_assertions" in saved:
+                    st.session_state.new_assertions = saved["new_assertions"]
+        except:
+            pass
+
+
+def auto_save_annotations():
+    """Auto-save annotations every minute if modified."""
+    current_time = time.time()
+    if st.session_state.annotation_modified and (current_time - st.session_state.last_save_time > 60):
+        save_annotations()
+        st.session_state.last_save_time = current_time
+        st.session_state.annotation_modified = False
+        return True
+    return False
+
+
+def save_annotations():
+    """Save current annotations to temporary file."""
+    save_data = {
+        "annotations": st.session_state.annotations,
+        "new_assertions": st.session_state.new_assertions,
+        "last_saved": datetime.now().isoformat()
+    }
+    with open(ANNOTATION_SAVE_PATH, 'w', encoding='utf-8') as f:
+        json.dump(save_data, f, indent=2, ensure_ascii=False)
+
+
+def get_annotation(utterance, assertion_idx):
+    """Get annotation for a specific assertion."""
+    if utterance in st.session_state.annotations:
+        return st.session_state.annotations[utterance].get(str(assertion_idx), {})
+    return {}
+
+
+def set_annotation(utterance, assertion_idx, is_good=None, revision=None, original=None, note=None):
+    """Set annotation for a specific assertion."""
+    if utterance not in st.session_state.annotations:
+        st.session_state.annotations[utterance] = {}
+    
+    key = str(assertion_idx)
+    if key not in st.session_state.annotations[utterance]:
+        st.session_state.annotations[utterance][key] = {"is_good": True, "revision": "", "original": "", "note": ""}
+    
+    if is_good is not None:
+        st.session_state.annotations[utterance][key]["is_good"] = is_good
+    if revision is not None:
+        st.session_state.annotations[utterance][key]["revision"] = revision
+    if original is not None:
+        st.session_state.annotations[utterance][key]["original"] = original
+    if note is not None:
+        st.session_state.annotations[utterance][key]["note"] = note
+    
+    st.session_state.annotation_modified = True
+
+
+def add_new_assertion(utterance, assertion_data):
+    """Add a new user-created assertion."""
+    if utterance not in st.session_state.new_assertions:
+        st.session_state.new_assertions[utterance] = []
+    st.session_state.new_assertions[utterance].append(assertion_data)
+    st.session_state.annotation_modified = True
+
+
+def get_new_assertions(utterance):
+    """Get user-added assertions for an utterance."""
+    return st.session_state.new_assertions.get(utterance, [])
+
+
+def export_annotated_data(output_data):
+    """Export annotated data in Kening's format with annotations field."""
+    exported = []
+    
+    for item in output_data:
+        utterance = item.get('utterance', '')
+        new_item = item.copy()
+        
+        # Add annotations field
+        annotations_for_item = []
+        original_assertions = item.get('assertions', [])
+        
+        for i, assertion in enumerate(original_assertions):
+            ann = get_annotation(utterance, i)
+            annotation_entry = {
+                "assertion_index": i,
+                "original_text": assertion.get('text', ''),
+                "is_good": ann.get('is_good', True),  # Default is good
+            }
+            
+            # Add revision if exists
+            if ann.get('revision'):
+                annotation_entry["revised_text"] = ann.get('revision')
+            
+            # Add note if exists
+            if ann.get('note'):
+                annotation_entry["note"] = ann.get('note')
+            
+            annotations_for_item.append(annotation_entry)
+        
+        # Add new assertions created by user
+        new_asserts = get_new_assertions(utterance)
+        for new_assert in new_asserts:
+            annotations_for_item.append({
+                "is_new": True,
+                "text": new_assert.get('text', ''),
+                "level": new_assert.get('level', 'expected'),
+                "justification": new_assert.get('justification', {}),
+                "is_good": True
+            })
+        
+        new_item['annotations'] = annotations_for_item
+        
+        # Calculate statistics
+        good_count = sum(1 for a in annotations_for_item if a.get('is_good', True))
+        total_count = len(annotations_for_item)
+        new_item['annotation_stats'] = {
+            "total": total_count,
+            "good": good_count,
+            "not_good": total_count - good_count,
+            "revised": sum(1 for a in annotations_for_item if a.get('revised_text')),
+            "new_added": len(new_asserts)
+        }
+        
+        exported.append(new_item)
+    
+    return exported
+
+
+# Initialize annotation state
+init_annotation_state()
+
+
+def get_assertion_reasoning(assertion):
+    """Get reasoning from assertion, handling both old and new formats.
+    
+    Old format: {'reasoning': {'reason': '...', 'source': '...'}}
+    New format: {'justification': {'reason': '...', 'sourceID': '...'}}
+    """
+    if 'justification' in assertion:
+        return assertion['justification']
+    elif 'reasoning' in assertion:
+        return assertion['reasoning']
+    return {}
+
+
+def get_assertion_source(assertion):
+    """Get source reference from assertion, handling both old and new formats.
+    
+    Old format uses 'source' field with descriptive text.
+    New format uses 'sourceID' field with entity IDs.
+    """
+    reasoning = get_assertion_reasoning(assertion)
+    if 'sourceID' in reasoning:
+        return reasoning['sourceID']
+    elif 'source' in reasoning:
+        return reasoning['source']
+    return ''
+
+
+def is_source_id_format(assertion):
+    """Check if assertion uses new sourceID format (entity IDs)."""
+    reasoning = get_assertion_reasoning(assertion)
+    return 'sourceID' in reasoning
+
+
+def build_entity_index(input_item):
+    """Build a lookup index for entities by various ID fields.
+    
+    Returns a dict mapping potential IDs to (entity_type, entity_index, entity_data).
+    sourceID can reference: FileId, EventId, ChatId, ChatMessageId, OnlineMeetingId, etc.
+    """
+    index = {}
+    
+    # Index the User
+    user_data = input_item.get('USER', {})
+    if user_data:
+        user_id = user_data.get('id', '')
+        if user_id:
+            index[user_id] = ('User', 0, user_data)
+        # Also index by common ID patterns
+        for key in ['id', 'userId', 'userPrincipalName']:
+            if key in user_data and user_data[key]:
+                index[user_data[key]] = ('User', 0, user_data)
+    
+    # Index all entities
+    entities = input_item.get('ENTITIES_TO_USE', [])
+    for i, entity in enumerate(entities):
+        etype = entity.get('type', 'Other')
+        
+        # Index by various ID fields that might be referenced
+        id_fields = [
+            'FileId', 'ChatId', 'EventId', 'ChannelMessageId', 'ChannelId',
+            'ChannelMessageReplyId', 'OnlineMeetingId', 'EmailId', 'MessageId',
+            'id', 'Id', 'ID', 'entityId', 'EntityId'
+        ]
+        for field in id_fields:
+            if field in entity and entity[field]:
+                index[entity[field]] = (etype, i, entity)
+        
+        # Index ChatMessageIds from nested ChatMessages in Chat entities
+        if etype == 'Chat' and 'ChatMessages' in entity:
+            for msg in entity['ChatMessages']:
+                if 'ChatMessageId' in msg:
+                    index[msg['ChatMessageId']] = ('ChatMessage', i, entity)
+        
+        # Also try to match by name/subject for partial matches
+        name_fields = ['Subject', 'FileName', 'DisplayName', 'Name', 'Title']
+        for field in name_fields:
+            if field in entity and entity[field]:
+                index[entity[field]] = (etype, i, entity)
+    
+    return index
+
+
+def find_entity_by_source_id(source_id, entity_index):
+    """Find an entity matching the given sourceID.
+    
+    Returns (entity_type, entity_index, entity_data) or None if not found.
+    """
+    if not source_id:
+        return None
+    
+    # Direct match
+    if source_id in entity_index:
+        return entity_index[source_id]
+    
+    # Try partial match (sourceID might be a substring or vice versa)
+    for key, value in entity_index.items():
+        if source_id in str(key) or str(key) in source_id:
+            return value
+    
+    return None
 
 # Entity Styling Configuration
 ENTITY_STYLES = {
@@ -217,6 +474,32 @@ def main():
     # Extract index from the selected option string "1. ✅ Subject..."
     selected_index = int(selected_option.split('.')[0]) - 1
 
+    # === OVERALL SAVE & EXPORT BUTTONS IN SIDEBAR ===
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("📁 Save & Export All")
+    
+    sidebar_col1, sidebar_col2 = st.sidebar.columns(2)
+    with sidebar_col1:
+        if st.sidebar.button("💾 Save All", help="Save all annotations to temp file", key="sidebar_save_all"):
+            save_annotations()
+            st.sidebar.success("✅ Saved!")
+    with sidebar_col2:
+        if st.sidebar.button("📤 Export All", help="Export all annotated data", key="sidebar_export_all"):
+            exported = export_annotated_data(output_data)
+            with open(ANNOTATION_EXPORT_PATH, 'w', encoding='utf-8') as f:
+                for item in exported:
+                    f.write(json.dumps(item, ensure_ascii=False) + '\n')
+            st.sidebar.success(f"✅ Exported!")
+    
+    # Show annotation summary in sidebar
+    total_annotated = len(st.session_state.annotations)
+    total_new = sum(len(v) for v in st.session_state.new_assertions.values())
+    st.sidebar.caption(f"📊 {total_annotated} items annotated | {total_new} new assertions")
+    
+    last_save = datetime.fromtimestamp(st.session_state.last_save_time).strftime("%H:%M:%S")
+    st.sidebar.caption(f"🕐 Last save: {last_save}")
+    st.sidebar.markdown("---")
+
     # Get selected input item
     input_item = input_data[selected_index]
     utterance_text = input_item.get('UTTERANCE', {}).get('text', '')
@@ -229,10 +512,29 @@ def main():
     
     # Utterance Section
     st.subheader("🗣️ Utterance")
-    st.info(utterance_text)
+    st.info(f"**{utterance_text}**")
+
+    # Check if we should auto-expand the Input Context section (from entity link click)
+    expand_input = st.session_state.get("expand_input_context", False)
+    linked_entity_id = st.session_state.get("linked_entity_id")
+    linked_entity_type = st.session_state.get("linked_entity_type")
+    linked_entity_data = st.session_state.get("linked_entity_data")
+    
+    # Clear the expand flag after using it
+    if expand_input:
+        st.session_state["expand_input_context"] = False
 
     # Input Data Toggle
-    with st.expander("📥 View Input Context (LOD Data)", expanded=False):
+    with st.expander("📥 View Input Context (LOD Data)", expanded=expand_input):
+        # Show linked entity notification if applicable
+        if linked_entity_id:
+            st.success(f"🔗 Linked to **{linked_entity_type}** entity with ID: `{linked_entity_id}`")
+            if st.button("❌ Clear Link", key="clear_entity_link"):
+                st.session_state["linked_entity_id"] = None
+                st.session_state["linked_entity_type"] = None
+                st.session_state["linked_entity_data"] = None
+                st.rerun()
+        
         # View Mode Toggle
         view_mode = st.radio("View Mode", ["Card View", "JSON View"], horizontal=True, label_visibility="collapsed")
         
@@ -245,7 +547,13 @@ def main():
             st.markdown("#### 👤 User")
             user_data = input_item.get('USER', {})
             if user_data:
+                # Check if this user is the linked entity
+                is_linked_user = linked_entity_type == "User" and linked_entity_data == user_data
+                border_style = "border: 3px solid #28a745;" if is_linked_user else ""
+                
                 with st.container(border=True):
+                    if is_linked_user:
+                        st.markdown("🔗 **LINKED ENTITY**", help="This is the entity referenced by the assertion's sourceID")
                     st.markdown(f"**{user_data.get('displayName', 'Unknown')}**")
                     st.caption(f"ID: {user_data.get('id', 'N/A')}")
                     st.json(user_data, expanded=False)
@@ -282,11 +590,36 @@ def main():
 
                 # Display groups
                 for etype, group_items in groups.items():
-                    # Show statistics in the expander label
-                    with st.expander(f"**{etype}** ({len(group_items)} items)", expanded=groups_expanded):
+                    # Check if this group contains the linked entity
+                    contains_linked = linked_entity_type == etype if linked_entity_type else False
+                    group_should_expand = groups_expanded or contains_linked
+                    
+                    # Show statistics in the expander label (add marker if contains linked entity)
+                    label = f"**{etype}** ({len(group_items)} items)"
+                    if contains_linked:
+                        label = f"🔗 **{etype}** ({len(group_items)} items) - Contains linked entity"
+                    
+                    with st.expander(label, expanded=group_should_expand):
                         for i, item in enumerate(group_items):
+                            # Check if this specific item is the linked entity
+                            is_linked = False
+                            if linked_entity_data:
+                                # Match by multiple ID fields
+                                for id_field in ['EventId', 'FileId', 'ChatId', 'MessageId', 'id', 'Id']:
+                                    if id_field in item and id_field in linked_entity_data:
+                                        if item[id_field] == linked_entity_data[id_field]:
+                                            is_linked = True
+                                            break
+                            
                             # Individual Card
                             with st.container(border=True):
+                                # Show linked indicator
+                                if is_linked:
+                                    st.markdown(
+                                        "<div style='background-color: #d4edda; padding: 8px; border-radius: 5px; border-left: 5px solid #28a745; margin-bottom: 10px;'>🔗 <strong>LINKED ENTITY</strong> - This entity is referenced by the assertion's sourceID</div>",
+                                        unsafe_allow_html=True
+                                    )
+                                
                                 # Determine a title for the card
                                 title = item.get('Subject') or item.get('FileName') or item.get('DisplayName') or item.get('EventId') or "Item"
                                 header = get_entity_card_header(etype, title)
@@ -346,11 +679,43 @@ def main():
 
         with col2:
             st.subheader("✅ Assertions")
+            
+            # Annotation controls
+            ann_col1, ann_col2, ann_col3 = st.columns([2, 2, 2])
+            with ann_col1:
+                if st.button("💾 Save Annotations", help="Save current annotations to temp file"):
+                    save_annotations()
+                    st.success("✅ Saved!")
+            with ann_col2:
+                if st.button("📤 Export Data", help="Export annotated data in Kening's format"):
+                    exported = export_annotated_data(output_data)
+                    with open(ANNOTATION_EXPORT_PATH, 'w', encoding='utf-8') as f:
+                        for item in exported:
+                            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+                    st.success(f"✅ Exported to {ANNOTATION_EXPORT_PATH}")
+            with ann_col3:
+                # Auto-save indicator
+                if auto_save_annotations():
+                    st.toast("💾 Auto-saved annotations")
+                last_save = datetime.fromtimestamp(st.session_state.last_save_time).strftime("%H:%M:%S")
+                st.caption(f"🕐 Last save: {last_save}")
+            
             assertions = output_item.get('assertions', [])
+            
+            # Calculate annotation statistics
+            total_assertions = len(assertions) + len(get_new_assertions(utterance_text))
+            good_count = sum(1 for i in range(len(assertions)) 
+                           if get_annotation(utterance_text, i).get('is_good', True))
+            new_count = len(get_new_assertions(utterance_text))
+            
+            st.markdown(f"**Stats:** {good_count}/{len(assertions)} marked good | {new_count} new added")
             
             if not assertions:
                 st.warning("No assertions found for this entry.")
             else:
+                # Build entity index once for all assertions
+                entity_index = build_entity_index(input_item) if input_item else {}
+                
                 for i, assertion in enumerate(assertions):
                     level = assertion.get('level', 'unknown').lower()
                     
@@ -362,23 +727,179 @@ def main():
                     }
                     color = color_map.get(level, "blue")
                     
+                    # Check if sourceID has a matching reference
+                    source = get_assertion_source(assertion)
+                    has_reference = False
+                    if source and is_source_id_format(assertion):
+                        entity_info = find_entity_by_source_id(source, entity_index)
+                        has_reference = entity_info is not None
+                    
+                    # Add evidence icon: 🟢 for matched, 🔴 for unmatched/missing
+                    if source and is_source_id_format(assertion):
+                        evidence_icon = "🟢" if has_reference else "🔴"
+                    else:
+                        evidence_icon = ""  # No icon for old format (text sources)
+                    
+                    # Get current annotation state
+                    ann = get_annotation(utterance_text, i)
+                    is_good = ann.get('is_good', True)
+                    revision = ann.get('revision', '')
+                    note = ann.get('note', '')
+                    
+                    # Revision/note indicator in header
+                    has_feedback = revision or note
+                    feedback_icon = "📝" if has_feedback else ""
+                    
                     # Card-like expander for each assertion
-                    with st.expander(f":{color}[**{level.upper()}**] - {assertion.get('text', '')[:60]}..."):
-                        st.markdown(f"**Full Assertion:**\n{assertion.get('text')}")
+                    with st.expander(f"{evidence_icon} {feedback_icon} :{color}[**{level.upper()}**] - {assertion.get('text', '')[:50]}..."):
                         
-                        reasoning = assertion.get('reasoning', {})
+                        # === ANNOTATION CONTROLS ===
+                        st.markdown("##### 📋 Annotation")
+                        
+                        # Full assertion text in a highlighted box
+                        st.markdown(
+                            f"""<div style='background-color: #e8f4fd; padding: 15px; border-radius: 8px; 
+                                border-left: 4px solid #1976d2; margin-bottom: 15px;'>
+                                <strong style='color: #1565c0;'>Full Assertion:</strong><br>
+                                <span style='color: #333; font-size: 1em;'>{assertion.get('text', '')}</span>
+                            </div>""",
+                            unsafe_allow_html=True
+                        )
+                        
+                        st.caption("Check this assertion if it is correct; uncheck it if it is incorrect. Optionally, provide an explanation in the note below about why the assertion is incorrect.")
+                        
+                        # Checkbox for correct/incorrect - green when checked (correct)
+                        # Use selected_index in key to prevent collisions between different entries
+                        is_good_new = st.checkbox(
+                            "This assertion is correct", 
+                            value=is_good, 
+                            key=f"good_{selected_index}_{i}"
+                        )
+                        if is_good_new != is_good:
+                            set_annotation(utterance_text, i, is_good=is_good_new, original=assertion.get('text', ''))
+                        
+                        # Note field - always visible for comments
+                        st.markdown("**Note:** (Optional comments or explanation)")
+                        new_note = st.text_area(
+                            "Add your notes here",
+                            value=note,
+                            key=f"note_{selected_index}_{i}",
+                            height=80,
+                            placeholder="Enter any comments about this assertion...",
+                            label_visibility="collapsed"
+                        )
+                        if new_note != note:
+                            set_annotation(utterance_text, i, note=new_note)
+                        
+                        # Revision text area - always visible for consistency
+                        st.markdown("**Revision:** (Optional - suggest an improved assertion text)")
+                        new_revision = st.text_area(
+                            "Revised assertion text",
+                            value=revision if revision else "",
+                            key=f"revision_{selected_index}_{i}",
+                            height=100,
+                            placeholder="Enter a revised version of this assertion if needed...",
+                            label_visibility="collapsed"
+                        )
+                        if new_revision != revision:
+                            set_annotation(utterance_text, i, revision=new_revision, original=assertion.get('text', ''))
+                        
+                        st.markdown("---")
+                        
+                        # === JUSTIFICATION/REASONING CONTENT ===
+                        # Handle both old format (reasoning) and new format (justification)
+                        reasoning = get_assertion_reasoning(assertion)
                         if reasoning:
-                            st.markdown("**Reasoning:**")
-                            st.info(reasoning.get('reason', 'No reasoning provided.'))
+                            # Label based on format: new format uses 'justification', old uses 'reasoning'
+                            label = "**Justification:**" if 'justification' in assertion else "**Reasoning:**"
+                            st.markdown(label)
+                            st.info(reasoning.get('reason', 'No justification provided.'))
                             
-                            source = reasoning.get('source', '')
+                            # Handle both old (source) and new (sourceID) formats
+                            source = get_assertion_source(assertion)
                             if source:
-                                st.markdown("**Source:**")
-                                # Highlight the source text in yellow as requested
-                                st.markdown(
-                                    f"<div style='background-color: #fff3cd; padding: 10px; border-radius: 5px; border-left: 5px solid #ffc107; color: #856404;'>{source}</div>", 
-                                    unsafe_allow_html=True
-                                )
+                                # Check if using new sourceID format
+                                if is_source_id_format(assertion):
+                                    st.markdown("**Source ID:**")
+                                    
+                                    # Use the pre-built entity index (already built above)
+                                    entity_info = find_entity_by_source_id(source, entity_index)
+                                    
+                                    if entity_info:
+                                        entity_type, entity_idx, entity_data = entity_info
+                                        
+                                        # Get entity display info
+                                        entity_name = (entity_data.get('FileName') or 
+                                                      entity_data.get('Subject') or 
+                                                      entity_data.get('ChatName') or 
+                                                      entity_data.get('DisplayName') or 
+                                                      entity_data.get('displayName') or
+                                                      'Unknown')
+                                        icon = ENTITY_STYLES.get(entity_type, {}).get('icon', '📦')
+                                        style_color = ENTITY_STYLES.get(entity_type, {}).get('color', '#6c757d')
+                                        
+                                        # Render beautifully formatted inline entity card (matching LOD card style)
+                                        with st.container(border=True):
+                                            # Header with icon and entity type
+                                            st.markdown(
+                                                f"""<div style='background: linear-gradient(135deg, {style_color}22, {style_color}11); 
+                                                    padding: 10px 15px; margin: -1rem -1rem 1rem -1rem; 
+                                                    border-bottom: 2px solid {style_color}; border-radius: 8px 8px 0 0;'>
+                                                    <span style='font-size: 1.5em;'>{icon}</span>
+                                                    <strong style='font-size: 1.2em; color: {style_color}; margin-left: 8px;'>{entity_type}</strong>
+                                                    <span style='float: right; background: #d4edda; color: #155724; padding: 2px 8px; 
+                                                        border-radius: 12px; font-size: 0.75em;'>✓ Matched</span>
+                                                </div>""",
+                                                unsafe_allow_html=True
+                                            )
+                                            
+                                            # Entity name as title
+                                            st.markdown(f"### {entity_name}")
+                                            st.caption(f"🔗 `{source}`")
+                                            
+                                            # Render card content based on entity type (like LOD cards)
+                                            if entity_type == 'User':
+                                                render_user_card(entity_data)
+                                            elif entity_type == 'File':
+                                                render_file_card(entity_data, key_suffix=f"inline_{i}")
+                                            else:
+                                                # For other entity types, render a generic styled card
+                                                render_generic_card(entity_data)
+                                            
+                                            # Always show raw JSON in expander
+                                            with st.expander("📋 Raw JSON"):
+                                                st.json(entity_data)
+                                        
+                                        # Optional: Button to jump to full entity in Input Context
+                                        if st.button(f"🔗 View in Input Context", key=f"link_entity_{selected_index}_{i}", help=f"Jump to {entity_type} in Input Context"):
+                                            st.session_state["linked_entity_id"] = source
+                                            st.session_state["linked_entity_type"] = entity_type
+                                            st.session_state["linked_entity_data"] = entity_data
+                                            st.session_state["expand_input_context"] = True
+                                            st.rerun()
+                                    else:
+                                        # Unmatched - show in light red with proper styling
+                                        with st.container(border=True):
+                                            st.markdown(
+                                                f"""<div style='background: linear-gradient(135deg, #dc354522, #dc354511); 
+                                                    padding: 10px 15px; margin: -1rem -1rem 1rem -1rem; 
+                                                    border-bottom: 2px solid #dc3545; border-radius: 8px 8px 0 0;'>
+                                                    <span style='font-size: 1.5em;'>⚠️</span>
+                                                    <strong style='font-size: 1.2em; color: #dc3545; margin-left: 8px;'>Unmatched Source ID</strong>
+                                                    <span style='float: right; background: #f8d7da; color: #721c24; padding: 2px 8px; 
+                                                        border-radius: 12px; font-size: 0.75em;'>✗ Not Found</span>
+                                                </div>""",
+                                                unsafe_allow_html=True
+                                            )
+                                            st.code(source, language=None)
+                                            st.warning("This ID was not found in the LOD input data. It may be a synthetic/generated reference.")
+                                else:
+                                    st.markdown("**Source:**")
+                                    # Highlight the source text in yellow as requested
+                                    st.markdown(
+                                        f"<div style='background-color: #fff3cd; padding: 10px; border-radius: 5px; border-left: 5px solid #ffc107; color: #856404;'>{source}</div>", 
+                                        unsafe_allow_html=True
+                                    )
                                 
                                 # Button to locate in response
                                 # Check if pre-computed matches exist
@@ -386,7 +907,7 @@ def main():
                                 
                                 if matched_segments:
                                     # Use pre-computed matches
-                                    if st.button(f"🔍 Show Evidence", key=f"locate_{i}"):
+                                    if st.button(f"🔍 Show Evidence", key=f"locate_{selected_index}_{i}"):
                                         st.session_state["highlight_matches"] = matched_segments
                                         st.session_state["active_assertion_index"] = i
                                         st.rerun()
@@ -401,18 +922,77 @@ def main():
                                     with col1:
                                         st.caption(f"✅ Showing {len(matches)} evidence passages (Strongest to Weakest)")
                                     with col2:
-                                        if st.button("❌", key=f"clear_{i}", help="Clear Highlight"):
+                                        if st.button("❌", key=f"clear_{selected_index}_{i}", help="Clear Highlight"):
                                             st.session_state["highlight_matches"] = None
                                             st.session_state["highlight_term"] = None
                                             st.session_state["active_assertion_index"] = None
                                             st.rerun()
-                                            st.rerun()
-                            st.caption(f"{reasoning.get('reason', 'N/A')}")
-                            
-                            st.markdown("**Source:**")
-                            st.caption(f"{reasoning.get('source', 'N/A')}")
                         else:
                             st.markdown("*No reasoning provided.*")
+            
+            # === DISPLAY USER-ADDED ASSERTIONS ===
+            new_assertions = get_new_assertions(utterance_text)
+            if new_assertions:
+                st.markdown("---")
+                st.markdown("### ➕ User-Added Assertions")
+                for j, new_assert in enumerate(new_assertions):
+                    level = new_assert.get('level', 'expected')
+                    color = {"critical": "red", "expected": "green", "aspirational": "orange"}.get(level, "blue")
+                    with st.expander(f"🆕 :{color}[**{level.upper()}**] - {new_assert.get('text', '')[:50]}..."):
+                        st.markdown(f"**Assertion:** {new_assert.get('text', '')}")
+                        st.markdown(f"**Level:** {level}")
+                        if new_assert.get('justification', {}).get('reason'):
+                            st.markdown(f"**Justification:** {new_assert['justification']['reason']}")
+                        if new_assert.get('justification', {}).get('sourceID'):
+                            st.markdown(f"**Source ID:** `{new_assert['justification']['sourceID']}`")
+            
+            # === ADD NEW ASSERTION FORM ===
+            st.markdown("---")
+            with st.expander("➕ Add New Assertion", expanded=False):
+                st.markdown("Create a new assertion for this utterance:")
+                
+                new_text = st.text_area(
+                    "Assertion Text",
+                    placeholder="The response should...",
+                    key=f"new_assertion_text_{selected_index}",
+                    height=100
+                )
+                
+                new_level = st.selectbox(
+                    "Level",
+                    ["critical", "expected", "aspirational"],
+                    index=1,
+                    key=f"new_assertion_level_{selected_index}"
+                )
+                
+                new_reason = st.text_area(
+                    "Justification Reason",
+                    placeholder="Why is this assertion important?",
+                    key=f"new_assertion_reason_{selected_index}",
+                    height=80
+                )
+                
+                new_source_id = st.text_input(
+                    "Source ID (optional)",
+                    placeholder="Entity ID from LOD data (e.g., FileId, EventId)",
+                    key=f"new_assertion_source_{selected_index}"
+                )
+                
+                if st.button("➕ Add Assertion", key=f"add_new_assertion_btn_{selected_index}"):
+                    if new_text:
+                        new_assertion_data = {
+                            "text": new_text,
+                            "level": new_level,
+                            "justification": {
+                                "reason": new_reason,
+                                "sourceID": new_source_id
+                            }
+                        }
+                        add_new_assertion(utterance_text, new_assertion_data)
+                        st.success("✅ New assertion added!")
+                        st.rerun()
+                    else:
+                        st.error("Please enter assertion text.")
     else:
         st.warning("⚠️ No generated output found for this input meeting.")
 

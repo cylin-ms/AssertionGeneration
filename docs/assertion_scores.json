@@ -1,0 +1,1292 @@
+{
+  "timestamp": "2025-11-26T02:54:01.603211",
+  "num_samples": 10,
+  "overall_stats": {
+    "total_assertions": 143,
+    "passed_assertions": 143,
+    "pass_rate": 1.0
+  },
+  "meetings": [
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'Pipeline Performance Deep Dive'",
+      "total_assertions": 14,
+      "passed_assertions": 14,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should explicitly state the meeting date and time as August 5, 2025 at 10:00 AM PDT, matching the 'Pipeline Performance Deep Dive' event in the enterprise calendar.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as 'August 5, 2025, 10:00–10:30 AM PDT' under the Context & Assumptions section, which matches the required event details.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should identify Shakia Gencarelli as the meeting organizer and Wilford Taussig as a required attendee, consistent with the calendar event details.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists Shakia Gencarelli as the organizer and Wilford Taussig as a required attendee in the Context & Assumptions section.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should include a finalization task instructing to update and save the deck based on 'JWT_Cache_Dynamic_Resizing_DeepDive.pptx' in 'EngineeringDocuments/Slides'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The plan includes a finalization task: 'Finalize & upload meeting deck' due Aug 4, 5:00 PM PDT, with notes stating to base on 'JWT_Cache_Dynamic_Resizing_DeepDive.pptx' and save to 'EngineeringDocuments/Slides'.",
+          "source_id": "50947a6b-d121-45e6-b6b6-cd5722f3b709"
+        },
+        {
+          "assertion_text": "The response should schedule review of recent metric reports including 'Detailed_Cache_Resize_And_Metrics_Report.xlsx' and 'Detailed_Cache_Resize_Parameter_Sensitivity.xlsx' before deck finalization.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan explicitly includes a task on Aug 4 at 11:30 AM to review recent data from 'Detailed_Cache_Resize_And_Metrics_Report.xlsx' and 'Detailed_Cache_Resize_Parameter_Sensitivity.xlsx' before finalizing the deck later in the day.",
+          "source_id": "ec4208ee-b061-4e57-8a6a-8506cb63dfeb"
+        },
+        {
+          "assertion_text": "The response should explicitly indicate that the meeting objective (pipeline performance optimization and dynamic cache resizing) is inferred due to the lack of an explicit description in the grounding data.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes an explicit statement under 'Context & Assumptions': 'Objective Inference: Meeting likely focuses on pipeline performance optimizations and possibly dynamic cache resizing learnings and roadmap alignment.' This clearly indicates the objective is inferred due to lack of explicit description.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should specify task ownership using actual user names (e.g., Shakia Gencarelli) for all preparation and finalization steps.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "All preparation and finalization tasks explicitly list Shakia Gencarelli as the owner in the task tables for Aug 4 and Aug 5 steps.",
+          "source_id": "lod_shakiag"
+        },
+        {
+          "assertion_text": "The response should present timeline phases in reverse order starting from the meeting date to preparation steps, forming a true workback structure.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response organizes tasks into phases starting from the meeting date (Aug 5) and then moves backward to finalization (Aug 4 EOD) and preparation (Aug 4 morning), clearly forming a reverse chronological workback structure.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should identify sending pre-reads and the Teams meeting link to Wilford Taussig as a scheduled task before end of Aug 4 PDT.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The plan explicitly includes a task: 'Send pre-reads & join link to attendee' due Aug 4, 5:30 PM PDT, owned by Shakia Gencarelli, with details to attach updated deck and share links. This satisfies the requirement to send pre-reads and Teams link before end of Aug 4 PDT.",
+          "source_id": "50947a6b-d121-45e6-b6b6-cd5722f3b709"
+        },
+        {
+          "assertion_text": "The response should acknowledge tight turnaround as a risk and propose mitigation actions such as blocking prep time on Aug 4.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly identifies tight turnaround as a risk and proposes mitigation by blocking calendar time on Aug 4 for prep and finalization (9:00–13:00 PDT and 15:00–18:00 PDT).",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should document dependencies explicitly, such as pre-read email depending on deck finalization.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes an explicit 'Dependencies' section stating that the pre-read email depends on deck finalization and RSVP confirmation depends on calendar response, satisfying the requirement for documenting dependencies.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should reference related supporting documents 'JWT_Cache_Dynamic_Resizing_Guide.docx' and 'JWT_Cache_Thrash_Prevention_Guide.docx' as part of materials to share or review.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly lists 'JWT_Cache_Dynamic_Resizing_Guide.docx' and 'JWT_Cache_Thrash_Prevention_Guide.docx' under Recent Related Materials and includes them in the task to send pre-reads to the attendee.",
+          "source_id": "06157606-a47a-4c85-8e88-3f77a574527d"
+        },
+        {
+          "assertion_text": "The response should not fabricate stakeholders, dates, or artifacts beyond what can be inferred from the grounding data and should disclose any assumptions made.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response clearly discloses assumptions under the 'Context & Assumptions' section, including inferred objectives and risks. It does not fabricate stakeholders (uses Shakia Gencarelli and Wilford Taussig from grounding data), meeting date/time matches provided data, and referenced artifacts (e.g., JWT_Cache_Dynamic_Resizing_DeepDive.pptx) are plausible and tied to context. No invented details beyond reasonable inference are present.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should include a quick high-level timeline summary distinguishing morning prep vs. afternoon finalization on Aug 4.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response includes a 'Quick Timeline Overview' section that clearly distinguishes Aug 4 morning (analyze latest reports → update talking points) from Aug 4 afternoon (finalize deck → send pre-reads → confirm availability), satisfying the requirement for a high-level timeline summary.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        },
+        {
+          "assertion_text": "The response should propose actionable next steps immediately, such as blocking calendar time or drafting pre-read emails.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly lists immediate next actions such as blocking calendar time, locating the base deck, and reviewing metrics. It also offers to draft a pre-read email and create a checklist, which satisfies the requirement for actionable next steps.",
+          "source_id": "0c740b8a-d127-4f5d-9eae-1c4e362c36be"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'Security Pipeline Integration Workshop: Advanced Exercises & Threat Modeling'",
+      "total_assertions": 15,
+      "passed_assertions": 15,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 9,
+          "passed": 9,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should state the meeting subject as 'Security Pipeline Integration Workshop: Advanced Exercises & Threat Modeling' matching the event details.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists the meeting subject as 'Security Pipeline Integration Workshop: Advanced Exercises & Threat Modeling' under the Meeting Details section, matching the event details.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should provide the meeting date and time as July 30, 2025, from 17:00–19:00 PDT, consistent with the event.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as '2025-07-30, 17:00–19:00 PDT' under Meeting Details, which matches the required July 30, 2025, 17:00–19:00 PDT.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should list Danille Ciardullo as the organizer.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists 'Organizer: Danille Ciardullo (lod_danillec)' under Meeting Details.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should include all required attendees: Bev Mcginty, Cortez Dehn, Sau Alquesta, Saturnina Soyke, Shawnna Schelp, and optional attendee Nila Tanguma, matching the event invite.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists all required attendees (Bev Mcginty, Cortez Dehn, Sau Alquesta, Saturnina Soyke, Shawnna Schelp) and the optional attendee (Nila Tanguma) under the 'Meeting Details' section, matching the event invite.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should mention the agenda items such as 'Advanced gating logic tweaks in Jenkinsfile.security.groovy' and 'Threat modeling breakout groups' consistent with the meeting body.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists agenda highlights including 'Advanced gating logic tweaks in Jenkinsfile.security.groovy' and 'Threat modeling breakout groups (map high-severity flags → mitigation owners)', satisfying the assertion.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should reference attached files 'Security_Automation_Pipeline_Detailed_Analysis.xlsx' and 'Security Pipeline Workshop Agenda v2.pdf' that were provided with the meeting invite.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly lists both 'Security_Automation_Pipeline_Detailed_Analysis.xlsx' and 'Security Pipeline Workshop Agenda v2.pdf' under Attachments and includes them in the workback tasks for validation and distribution.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should include a clear timeline with tasks and deadlines sequenced backward from the meeting start time of 17:00 PDT.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response provides a detailed table of tasks with specific due times (e.g., 09:00, 09:30, 10:00, etc.) leading up to the meeting start at 17:00 PDT. Tasks are sequenced in reverse from the meeting time, satisfying the requirement for a clear timeline backward from the meeting start.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should assign owners for critical tasks such as agenda confirmation (Danille), technical setup check (Cortez), and breakout logistics (Danille + Saturnina).",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly assigns owners for the critical tasks: agenda confirmation is assigned to Danille (Task 1), technical setup check is assigned to Cortez (Task 5), and breakout logistics is assigned to Danille + Saturnina (Task 4).",
+          "source_id": "lod_danillec"
+        },
+        {
+          "assertion_text": "The response should explicitly show dependency relationships, such as confirming agenda before sending reminders with pre-read links.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly sequences tasks to reflect dependencies. For example, Task 1 is 'Confirm Agenda Finalization' at 09:00, and Task 3 'Send Reminder with Pre-Read Links' occurs after Task 2 'Validate Attachments & Pre-reads Distribution.' This shows that agenda confirmation and file validation precede sending reminders, satisfying the dependency requirement.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should upload related reference documents like 'Security Pipeline Gating Deep Dive Presentation.pdf' and 'Security_Automation_Pipeline_Gating_Framework_Study_v1.0.pdf' to a shared location before the session.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes Task 6: 'Upload Key Reference Docs to Shared Drive / Confluence' at 14:00, listing 'Security Pipeline Gating Deep Dive Presentation.pdf' and the gating framework study, which satisfies the intent of uploading related reference documents before the session.",
+          "source_id": "66d3c93f-87ca-470a-934d-292fde4e154d"
+        },
+        {
+          "assertion_text": "The response should provide context on limited prep time (~17 hours) and incorporate that constraint in sequencing tasks.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly states there are ~17 hours before the meeting and calls it an 'Extremely tight timeline,' noting that final prep must happen today. It also incorporates this constraint by creating an 'Aggressive - Same Day Execution' plan with tasks sequenced throughout the day.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should acknowledge assumptions where details are inferred, such as assuming no additional dependencies and identifying fallback plans for Jenkins or Vault issues.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes a 'Notes & Assumptions' section explicitly stating assumptions (e.g., no dependencies beyond agenda alignment and file readiness) and identifies a fallback plan for Jenkins/Vault issues (pivot to code walkthrough, prep fallback materials by 15:00).",
+          "source_id": "lod_danillec"
+        },
+        {
+          "assertion_text": "The response should schedule a technical dry run of Jenkinsfile.security.groovy live coding snippets before the meeting.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes Task 7: 'Quick Dry Run of Live Coding Snippets' at 15:00, owned by Danille and Cortez, to validate Jenkinsfile.security.groovy snippets for gating logic and Vault credential handling before the meeting.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should include communication tasks like sending a reminder email with join link prior to the meeting.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes communication tasks: Task 3 is 'Send Reminder with Pre-Read Links & Teams Link' at 10:00, and Task 8 is 'Send Final Reminder with Join Link' at 16:00. This satisfies the requirement for sending a reminder email with the join link prior to the meeting.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        },
+        {
+          "assertion_text": "The response should mention breakout group logistics and facilitator assignment consistent with workshop goals.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes Task 4: 'Confirm Breakout Logistics & Assign Owners' at 11:30, with Danille and Saturnina responsible, and notes mapping attendees to threat modeling breakout groups and confirming facilitators. This satisfies the requirement for breakout group logistics and facilitator assignment.",
+          "source_id": "0d2942a6-fdeb-4d11-a7ab-9612fb3fe739"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'v2.1.0 Production Canary Postmortem Deep Dive'",
+      "total_assertions": 15,
+      "passed_assertions": 15,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should state the meeting title exactly as 'v2.1.0 Production Canary Postmortem Deep Dive'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists the meeting title as 'v2.1.0 Production Canary Postmortem Deep Dive' under the Extracted Meeting Details section.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should provide the meeting date and start time as July 23, 2025, 17:00 PDT, matching the Event entity.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and start time as July 23, 2025, 17:00 PDT in both the 'Extracted Meeting Details' and the workback plan header.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should list Wilford Taussig as the organizer and required attendees including Sau Alquesta, Bev Mcginty, Myles Mckoan, Danille Ciardullo, and Octavia Jaso.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists Wilford Taussig as the organizer and includes all required attendees: Sau Alquesta, Bev Mcginty, Myles Mckoan, Danille Ciardullo, and Octavia Jaso.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should reference the attachment 'v2.1.0_Canary_Postmortem.pdf' as part of the plan artifacts.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly references 'v2.1.0_Canary_Postmortem.pdf' multiple times: in the Extracted Meeting Details under Attachments, in Phase 1 (16:15 task to load and skim PDF), and in Phase 4 (check PDF file location). It also notes its importance for action items and agenda context.",
+          "source_id": "5b1c5d73-cb78-4ba2-aa55-0df64c4c1dbf"
+        },
+        {
+          "assertion_text": "The response should include agenda items consistent with: review canary metrics vs thresholds, analyze Prometheus & Grafana alert triggers, postmortem on rollback incident, and define action items.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists agenda highlights including: review canary metrics vs thresholds, analyze Prometheus & Grafana alert triggers, postmortem on rollback incident, and action items (alert tuning, Jenkins improvements, doc updates).",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should include tasks sequenced with specific times prior to the meeting start and show at least three distinct phases (overnight, early morning, same-day morning, final hour) leading up to the meeting.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes a backward-sequenced timeline with specific times before the meeting and clearly defined phases: Phase 4 (Overnight Immediate), Phase 3 (Early Morning), Phase 2 (Same-Day Morning), and Phase 1 (Final Hour Pre-Meeting). Each phase lists tasks with exact times and owners.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should assign ownership for every major preparation task, including Wilford as responsible for multiple tasks.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan includes ownership for every major preparation task in the tables, with Wilford assigned to multiple tasks (e.g., confirm attendee availability, push reminder, validate agenda, review PDF, distribute links, check file accessibility). Other tasks are assigned to 'All' or Wilford + Sau where appropriate, satisfying the requirement for ownership and Wilford's responsibility for multiple tasks.",
+          "source_id": "lod_wilfordt"
+        },
+        {
+          "assertion_text": "The response should include a task to confirm attendee availability or acknowledgment that attendees have accepted, grounded in invite status.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan explicitly includes a task at 12:00 PDT: 'Confirm attendee availability' with a note stating 'Check if all required attendees have accepted (per schedule they have)', which acknowledges acceptance status from the invite.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should instruct stakeholders to review or have access to the Grafana dashboard 'Financial-Workflow-Metrics' as mentioned in the Event Body.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes tasks to review and access the Grafana dashboard 'Financial-Workflow-Metrics' (e.g., Phase 1: 16:20 task 'Open Grafana dashboard & PromQL queries' and mentions in pre-reads and reminder messages).",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should acknowledge the limited prep window (~17 hours) and identify this as a constraint or risk.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly states 'Available Prep Time: ~17 hours' and calls it a 'compressed timeline' requiring aggressive prioritization. It also lists 'Extremely tight prep window' as a critical risk, clearly acknowledging the constraint.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should include a same-day communication step, such as sending a Teams reminder message with pre-reads.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan explicitly includes a same-day communication step at 11:30 PDT: 'Push reminder in Teams Chat' with mention of key pre-reads (Grafana dashboard and PDF).",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        },
+        {
+          "assertion_text": "The response should integrate references to canary thresholds (cold ≤900ms, warm ≤130ms, memory ≤200MB) established in prior chat alignment.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes the canary thresholds (cold-start ≤900ms, warm ≤130ms, memory ≤200MB) in the 'Agenda Highlights' and references revisiting these thresholds in Phase 3 tasks, satisfying the requirement.",
+          "source_id": "226a76ea-81a3-43a6-87b9-d6063886e3a1"
+        },
+        {
+          "assertion_text": "The response should include artifact verification tasks, such as checking the PDF's accessibility in the EngineeringDocuments/Postmortems location before the meeting.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task in Phase 4: 'By 06:00 | Check PDF file location and accessibility | Wilford | File is in EngineeringDocuments/Postmortems and shared with attendees,' which satisfies the requirement for artifact verification before the meeting.",
+          "source_id": "5b1c5d73-cb78-4ba2-aa55-0df64c4c1dbf"
+        },
+        {
+          "assertion_text": "The response should disclose optional assumptions where details are not specified, such as explicitly noting that slide deck creation is optional given time constraints.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly notes that creating a slide or 1-pager summary is optional due to time constraints (e.g., 'Draft and freeze a concise slide or 1-pager summary (optional)' and mentions compressed timeline). This satisfies the requirement to disclose optional assumptions.",
+          "source_id": "5b1c5d73-cb78-4ba2-aa55-0df64c4c1dbf"
+        },
+        {
+          "assertion_text": "The response should propose an immediate next action starting at 00:00 PDT to align with the current time and timeline urgency.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly includes a section titled 'Recommendation for Next Action (Immediate)' stating: 'Now (00:00 PDT): Verify file accessibility, copy meeting agenda from invite into Teams Chat, and draft a quick reminder...' which aligns with the assertion for an immediate next action starting at 00:00 PDT.",
+          "source_id": "0d2eb894-c639-4ee6-9410-df78308b2d0c"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'JWT Cache Dynamic Resizing Working Session'",
+      "total_assertions": 15,
+      "passed_assertions": 15,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should state the meeting title as 'JWT Cache Dynamic Resizing Working Session'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting title as 'JWT Cache Dynamic Resizing Working Session' in the Context Recap section.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should include the correct meeting date and time as July 28, 2025, 14:00–15:30 PST.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as 'July 28, 2025, 14:00–15:30 PST' under the Context Recap section, which matches the assertion.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should identify Shakia Gencarelli as the meeting organizer.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states under Context Recap: 'Organizer: Shakia Gencarelli (you)', clearly identifying Shakia Gencarelli as the meeting organizer.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should list pre-read files by their exact names: 'JWT_Cache_Dynamic_Resizing_Guide.docx' and 'JWT_Cache_Deep_Dive_Presentation.pptx'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists the pre-read files as 'JWT_Cache_Dynamic_Resizing_Guide.docx' and 'JWT_Cache_Deep_Dive_Presentation.pptx' in both the Pre-reads section and Task 1 details.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should mention at least three exact agenda items from the meeting invite, such as reviewing 'cache_settings.yaml', walking through PR for cache_manager, and validating dashboards.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists multiple agenda items from the invite, including 'Review updated cache_settings.yaml schema (Bev)', 'Walkthrough PR for cache_manager dynamic logic (Shakia)', and 'Validate Prometheus/Grafana dash updates (Wilford)', satisfying the requirement for at least three exact agenda items.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should break down tasks with explicit due times and owners backward from the meeting date.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes detailed tables listing tasks with explicit due dates/times and assigned owners (e.g., Task 1: July 27, 10:00 AM PST – Owner: Shakia; Task 4: July 27, 4 PM PST – Owner: Bev), all scheduled backward from the July 28 meeting date.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should include a task for distributing pre-read materials on July 27 and assign it to Shakia.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "Task #1 explicitly states 'Distribute Pre-read Materials' due July 27, assigned to Shakia, with details on files and instructions.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should include a task for finalizing the dynamic_cache_settings.yaml snippet with parameters maxCap=512, maxGrow=100, stabilityWindow=4m, and missThreshold=0.012, assigned to Bev by July 27.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "Task #4 explicitly states 'Finalize YAML Update for Discussion' due July 27, assigned to Bev, and includes the parameters maxCap=512, maxGrow=100, stabilityWindow=4m, missThreshold=0.012.",
+          "source_id": "ab916b73-2d30-45ca-af5c-6544e4f888d5"
+        },
+        {
+          "assertion_text": "The response should schedule a load-test scenario outline by Porsha, covering JWKS rotation and eviction surge, due July 27.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "Task #7 explicitly assigns Porsha to outline load-test scenarios including JWKS rotation and eviction surge, with a due date of July 27, satisfying the assertion.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should explicitly acknowledge the tight timeline (~24 hours) as a risk or assumption.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly states under Assumptions & Risks: '**Tight Timeline:** ~24 hrs only; parallel tasks may be needed.' This directly acknowledges the ~24-hour constraint as a risk/assumption.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should include a contingency or dependency note indicating that YAML update completion is a prerequisite for PR review and load-test discussion.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes a dependency note under 'Assumptions & Risks': 'YAML update (Task 4) impacts PR review and load testing; must complete first.' This clearly indicates the prerequisite relationship requested.",
+          "source_id": "ab916b73-2d30-45ca-af5c-6544e4f888d5"
+        },
+        {
+          "assertion_text": "The response should clearly identify Wilford as the owner for validating Prometheus and Grafana panels.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "Task #6 in Phase 2 explicitly lists 'Validate Prometheus & Grafana Panels' with Wilford as the owner, satisfying the requirement.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should disclose assumptions about file currency or parameter defaults rather than implying they are confirmed.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes an explicit assumptions section stating 'Files considered current: Doc (July 26) and PPT (July 24)' and also notes parameter defaults in Task 4 (e.g., maxCap=512, maxGrow=100, etc.), indicating these are assumptions rather than confirmed values.",
+          "source_id": "06157606-a47a-4c85-8e88-3f77a574527d"
+        },
+        {
+          "assertion_text": "The response should provide a quick next action recommendation for the user (e.g., send pre-reads now).",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly includes a 'Next Action for You' section recommending to send pre-reads and agenda confirmation now, which satisfies the assertion.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        },
+        {
+          "assertion_text": "The response should include an optional speaker dry-run task prior to the meeting.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly includes Task #9 labeled as 'Optional: Quick Speaker Dry-Run' scheduled for July 28 at 10 AM PST, satisfying the assertion.",
+          "source_id": "0f1e1ece-ca4a-4371-bf61-fe216cce633a"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'Vault Integration Retrospective'",
+      "total_assertions": 15,
+      "passed_assertions": 15,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should state the correct meeting name 'Vault Integration Retrospective' matching the grounding data.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting name as 'Vault Integration Retrospective' in the Context & Key Details section, matching the grounding data.",
+          "source_id": "110080a4-12b4-4fd1-a79a-ffd8f92013d0"
+        },
+        {
+          "assertion_text": "The response should mention the scheduled meeting time as July 28, 2025 from 10:00 AM to 10:30 AM PST.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as 'July 28, 2025, 10:00–10:30 AM PST' under the Context & Key Details section.",
+          "source_id": "110080a4-12b4-4fd1-a79a-ffd8f92013d0"
+        },
+        {
+          "assertion_text": "The response should specify that the meeting is an online Teams meeting.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states under 'Context & Key Details' that the meeting type is 'Online (Teams)', satisfying the requirement that it specifies the meeting is an online Teams meeting.",
+          "source_id": "110080a4-12b4-4fd1-a79a-ffd8f92013d0"
+        },
+        {
+          "assertion_text": "The response should include specific pre-read materials by name, such as 'Vault_Integration_Workflow_Documentation.pdf' and 'Vault_Integration_Outcomes_and_Infographic.pptx'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists pre-read materials by name under 'Relevant Materials' and in the task to send pre-read packet, including 'Vault_Integration_Workflow_Documentation.pdf' and 'Vault_Integration_Outcomes_and_Infographic.pptx'.",
+          "source_id": "3e12e875-0459-427d-bf30-3db0b7802f7a"
+        },
+        {
+          "assertion_text": "The response should assign ownership for each listed task, explicitly naming Jason Adon where applicable.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "Every task in the workback plan includes an explicit Owner column, and Jason Adon is named for all applicable tasks (agenda drafting, slide prep, sending pre-read, logistical checks, facilitation, and follow-up). Other tasks correctly assign Nila Tanguma where relevant.",
+          "source_id": "lod_jasonadon"
+        },
+        {
+          "assertion_text": "The response should include at least one task assigned to Nila Tanguma, consistent with her manager role in compliance checks.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly assigns Nila Tanguma the task 'Verify compliance mapping completeness' due July 27, 6:30 PM PST, aligning with her manager role in compliance checks.",
+          "source_id": "lod_nilatanguma"
+        },
+        {
+          "assertion_text": "The response should reference compliance controls SI-10-01 to SI-10-04 in the context of agenda or quality checks.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly mentions compliance controls SI-10-01 to SI-10-04 in the agenda mapping under 'Draft Retrospective Agenda & Final Talking Points' and also references verifying compliance mapping completeness (SI-10-04) in the quality checks.",
+          "source_id": "914d0989-fb9d-4941-8309-2c06fb0630ec"
+        },
+        {
+          "assertion_text": "The response should provide a realistic timeline for task completion, starting immediately on July 27 with deadlines leading up to the meeting next day.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes a detailed timeline starting on July 27 with specific tasks and deadlines (e.g., 3:00 PM, 4:30 PM, 6:00 PM, 6:30 PM, 7:00 PM) and continues with day-of tasks on July 28 leading up to the 10:00 AM meeting. This satisfies the requirement for a realistic, immediate-start workback plan within the 33-hour window.",
+          "source_id": "110080a4-12b4-4fd1-a79a-ffd8f92013d0"
+        },
+        {
+          "assertion_text": "The response should include explicit risk disclosure such as limited stakeholder review time and note mitigation measures.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes a dedicated 'Assumptions & Risks' section explicitly stating the risk of limited time for stakeholder review and provides a mitigation strategy: emphasizing brief, focused pre-read review and reinforcing key points during the meeting.",
+          "source_id": "110080a4-12b4-4fd1-a79a-ffd8f92013d0"
+        },
+        {
+          "assertion_text": "The response should clearly state an assumption that critical artifacts (agenda and template) can be finalized on the same day (July 27).",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly includes an assumption stating: 'All critical artifacts (agenda, retrospective template) will be finalized same-day (7/27).' This directly satisfies the assertion.",
+          "source_id": "85c54ef0-f8c9-49d4-b1a7-b3a34463cb04"
+        },
+        {
+          "assertion_text": "The response should schedule the distribution of pre-read packets by July 27 evening (7:00 PM PST) before the meeting.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task: 'Send pre-read packet to attendees' scheduled for July 27, 7:00 PM PST, which satisfies the requirement to distribute pre-reads by the evening before the meeting.",
+          "source_id": "3e12e875-0459-427d-bf30-3db0b7802f7a"
+        },
+        {
+          "assertion_text": "The response should include a follow-up task to circulate meeting notes on July 28 after the session.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a post-meeting follow-up task: 'Circulate meeting notes and confirm assigned follow-up items' with a due date of July 28, 2:00 PM PST, satisfying the assertion.",
+          "source_id": "110080a4-12b4-4fd1-a79a-ffd8f92013d0"
+        },
+        {
+          "assertion_text": "The response should call out at least one dependency, such as drafting an agenda before finalizing the slide deck.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan shows a clear dependency: 'Draft Retrospective Agenda & Final Talking Points' (due July 27, 4:30 PM) occurs before 'Prepare final slide deck for retrospective' (due July 27, 6:00 PM), implying the agenda must be completed before the deck is finalized.",
+          "source_id": "c8bbeec2-5480-4c24-8cb0-ba676c6db60b"
+        },
+        {
+          "assertion_text": "The response should mention leveraging insights from 'VaultIntegration_TechnicalDeepDive.pptx' in retrospective preparation.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan explicitly states: 'Extract key learnings & pending AIs from Deep Dive Workshop' and notes to 'Use action list from VaultIntegration_TechnicalDeepDive.pptx (slide 5: AI-301 to AI-304)', which clearly shows leveraging insights from that file for retrospective preparation.",
+          "source_id": "85c54ef0-f8c9-49d4-b1a7-b3a34463cb04"
+        },
+        {
+          "assertion_text": "The response should include a contingency note acknowledging attendee list might change and email copy may need recalibration.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response includes a contingency note under 'Assumptions & Risks': 'Attendees list: Based on role overlap from Deep Dive; if final participant list differs, recalibrate email copy quickly.' This directly addresses the assertion about attendee list changes and email copy recalibration.",
+          "source_id": "995b311d-061d-4b8d-a0ee-b018cf30549c"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'Jenkins Pipeline Deep Dive'",
+      "total_assertions": 12,
+      "passed_assertions": 12,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 3,
+          "passed": 3,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should explicitly state the meeting subject as 'Jenkins Pipeline Deep Dive' matching the event details.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists the meeting subject as 'Jenkins Pipeline Deep Dive' under the Meeting Details section, matching the event details.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should state the meeting date and time as July 21, 2025, from 09:00 to 09:30 UTC.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as 'Mon, July 21, 2025 – 09:00 to 09:30 UTC' under Meeting Details.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should identify Markita Sitra as the meeting organizer and owner of preparation tasks.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly identifies Markita Sitra as the meeting organizer in the Meeting Details section and assigns her as the owner for all preparation tasks in the workback plan tables.",
+          "source_id": "lod_markitas"
+        },
+        {
+          "assertion_text": "The response should identify Danille Ciardullo as the required attendee for the meeting.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists Danille Ciardullo as the required attendee under Meeting Details and references her in multiple tasks (e.g., confirm attendee readiness, confirm Teams access).",
+          "source_id": "lod_danillec"
+        },
+        {
+          "assertion_text": "The response should include a clear meeting purpose aligned with the event body: a deep dive on Jenkins schema validation pipeline enhancements for fraud detection configuration.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting purpose as 'One-on-one deep dive session on Jenkins schema validation pipeline enhancements for fraud detection config,' which aligns with the event body and assertion.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should define at least one agenda creation task with a due time on July 20, 2025, prior to the meeting.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan includes a task 'Draft concise agenda (bullets)' with a due time of July 20 AM, which is prior to the meeting on July 21, 2025.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should include tasks related to confirming attendee readiness ahead of the meeting.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task 'Confirm attendee readiness' under Phase 1, with details to touch base with Danille and ensure she has context and expectations.",
+          "source_id": "lod_danillec"
+        },
+        {
+          "assertion_text": "The response should include a task to identify or gather technical documents needed for the meeting and mention that no attachments exist in enterprise data, indicating assumption of pulling configs manually.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes a task under Phase 2: 'Identify relevant technical docs / Jenkins configs' with a note stating 'Pull latest pipeline schema files from internal repo. (No linked files, so action needed to find locally)', which acknowledges no attachments exist and assumes manual retrieval.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should include a logistics check task, such as verifying the virtual meeting link, scheduled prior to EOD July 20.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan includes a logistics check task: 'Verify virtual meeting link & permissions' scheduled for July 20 PM, which is before EOD July 20.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should incorporate an explicit risk related to time zones and early meeting time, given both attendees are in Pacific Time while the meeting is at 09:00 UTC.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the risk: 'Both you and Danille are in US Pacific Time, meeting is 09:00 UTC → 02:00 AM PT (!). Risk: attendee availability at that early hour; confirm timing now.' This directly addresses the time zone and early meeting time concern.",
+          "source_id": "lod_markitas"
+        },
+        {
+          "assertion_text": "The response should disclose that the timeline is compressed and explicitly state the assumption that all preparation must occur on July 20, 2025.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly states that there is ~24 hours until the meeting and that all prep must be completed today (July 20). It also notes the timeline is extremely tight and tasks are compressed, satisfying the assertion.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        },
+        {
+          "assertion_text": "The response should recommend confirming the meeting timing as a next step due to risk of incorrect time zone alignment.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly recommends confirming the 09:00 UTC timing as a next step due to time zone risk, noting it may be 02:00 AM PT and suggesting rescheduling if needed.",
+          "source_id": "110531bd-0d24-418b-95dd-2b0400e43469"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'Workshop: Advanced Parameterized Tests & RSD Traceability Integration'",
+      "total_assertions": 15,
+      "passed_assertions": 15,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should mention the full meeting subject 'Workshop: Advanced Parameterized Tests & RSD Traceability Integration' exactly as in the event details.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly includes the full meeting subject under 'Meeting Details': 'Workshop: Advanced Parameterized Tests & RSD Traceability Integration'.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should state the meeting start date and time as July 28, 2025, 14:00 UTC, matching the event's StartDateTime.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as '2025-07-28, 14:00–17:00 UTC' under Meeting Details, which matches the required July 28, 2025, 14:00 UTC start time.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should include specific agenda items such as 'Custom MethodSource providers & YAML scenario mapping' and 'Artifact path conventions & traceabilityReportDir usage' that match the meeting invite body.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists agenda items including 'Custom MethodSource providers & YAML scenario mapping' and 'Artifact path conventions & traceabilityReportDir usage' under Agenda Highlights, matching the meeting invite scope.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should identify required attendees by name, including Saturnina Soyke, Jason Adon, Tisa Odonoghue, and Ashley Engel, as listed in the meeting invitation.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists required attendees by name under 'Meeting Details': Saturnina Soyke, Jason Adon, Tisa Odonoghue, and Ashley Engel, satisfying the assertion.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should list distribution of the file 'Advanced_JUnit_Parametrization_and_RSD_Traceability_Guide.pdf' as a pre-read deliverable.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task to distribute pre-read materials and confirms all attendees have 'Advanced_JUnit_Parametrization_and_RSD_Traceability_Guide.pdf' (Jul 27, 09:00 UTC).",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should schedule a task for validating lab prerequisites like ensuring 'UserProfileControllerTest' and 'TransactionServiceTest' branches are accessible.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task under Phase 1: 'Validate lab prerequisites (code access)' due Jul 27, 10:00 UTC, owned by Jason Adon & Tisa Odonoghue, with notes to ensure `UserProfileControllerTest` & `TransactionServiceTest` branches are accessible.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should include a task to review test coverage from 'Onboarding_Test_Coverage_Details.xlsx' and highlight failing cases such as 'invalid_date_format'.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan includes a task: 'Collate test coverage trends for reference' due Jul 27, 12:00 UTC, owned by Tisa Odonoghue, with notes specifying to use 'Onboarding_Test_Coverage_Details.xlsx' and highlight failing case 'invalid_date_format' in UserProfileControllerTest.",
+          "source_id": "12ebb430-4a6f-47f3-9c71-d1a30f69e32f"
+        },
+        {
+          "assertion_text": "The response should assign clear owners to each task, for example Shari Jatho for pre-read distribution and Jason Adon & Tisa Odonoghue for code access checks.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan includes a task table with an 'Owner' column assigning specific individuals to each task, e.g., Shari Jatho for pre-read distribution and Jason Adon & Tisa Odonoghue for code access checks, satisfying the assertion.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should indicate at least one assumption or risk due to time compression, such as noting the tight 1-day preparation window.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly states an assumption/risk: '**Tight window:** Only ~1 day left; tasks compressed; notify team early' under the 'Assumptions & Risks' section, which directly addresses the time compression constraint.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should schedule a technical check of Teams meeting link and recording permissions on the meeting day.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan explicitly includes a task on Jul 28 at 12:30 UTC for a tech check of the Teams meeting link and recording permissions, satisfying the requirement.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should incorporate sequencing that works backward from meeting start time, with earlier tasks (like pre-read distribution) due before later ones (like tech check).",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response clearly sequences tasks in reverse from the meeting start time (2025-07-28 14:00 UTC). Phase 1 lists tasks for Jul 27 (pre-read distribution, lab prerequisites) before Phase 2 tasks on Jul 28 (tech check, reconfirm attendees), culminating in Phase 3 at meeting time. This satisfies backward sequencing.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should mention specific supportive artifacts besides the slide deck, such as 'Onboarding_Test_Naming_and_Scenario_Guide.docx' and 'Onboarding_Error_Handling_Guide.docx'.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly lists additional supportive artifacts under 'Relevant Files/Docs', including 'Onboarding_Test_Naming_and_Scenario_Guide.docx' and 'Onboarding_Error_Handling_Guide.docx', satisfying the assertion.",
+          "source_id": "9af8f1e3-978c-4ebe-8ade-83e78481ba54"
+        },
+        {
+          "assertion_text": "The response should include an explicit dry-run activity to test Maven commands using onboardingErrorScenarios.yaml.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a dry-run activity: 'Conduct brief dry-run of demo commands' with the note 'Test param test execution: mvn test -DscenarioFile=onboardingErrorScenarios.yaml' scheduled for Jul 27, 17:00 UTC.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should include a contingency for participant absence, such as sharing a run-sheet or lab walkthrough document.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response includes a contingency for participant absence: 'If anyone OOO, contingency: Share updated run-sheet + lab walkthrough doc to chat.' This directly addresses the assertion.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        },
+        {
+          "assertion_text": "The response should conclude with an offer to generate a Teams reminder message or a one-page consolidated run-sheet.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response ends with: 'Would you like me to generate a Teams message now that: ... OR should I draft a one-page consolidated run-sheet for easy reference during the workshop?' This explicitly offers both options requested in the assertion.",
+          "source_id": "110808e8-aa23-4972-91c6-a8d7a0d5227a"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'OTLP Dynamic Batch Sizing Algorithm Review'",
+      "total_assertions": 15,
+      "passed_assertions": 15,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should state the correct meeting title 'OTLP Dynamic Batch Sizing Algorithm Review'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting title as 'OTLP Dynamic Batch Sizing Algorithm Review' under the Context Confirmation section.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should include the meeting date and time as August 5, 2025, 09:00–09:30 PDT.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as '2025-08-05, 09:00–09:30 PDT' under the Context Confirmation section.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should identify Emory Scherping as the meeting organizer.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states '**Organizer:** Emory Scherping' under the Context Confirmation section, clearly identifying Emory Scherping as the meeting organizer.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should list both required attendees: Emory Scherping and Danille Ciardullo.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists required attendees as 'Emory Scherping, Danille Ciardullo' under the Context Confirmation section.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should include a backward-sequenced timeline of tasks ending with a task for Emory to join and check tech at 08:30 PDT on August 5.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response includes a backward-sequenced timeline with tasks for Aug 4 and Aug 5, ending with a day-of task: '08:30 Final tech check & join meeting early | Emory' on Aug 5, 2025.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should assign clear task ownership for all major activities, with Emory responsible for deck assembly and Danille responsible for data validation.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan assigns owners for all major tasks. Emory is explicitly responsible for deck assembly (e.g., 'Finalize review deck' and 'Initial draft deck ready for review'), and Danille is responsible for data validation (e.g., 'Validate key data points from benchmarking spreadsheet'). Every listed task includes an owner column with clear assignments.",
+          "source_id": "lod_emorys"
+        },
+        {
+          "assertion_text": "The response should explicitly include a deadline for finalizing the review deck as August 4, 17:00 PDT.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan explicitly states: '**17:00 PDT** | **Finalize review deck** incorporating key findings...' under Aug 4, 2025 (Today) – Finalization Phase, which matches the required deadline of August 4, 17:00 PDT.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should reference the file 'OTLP_Exporter_Performance_Detailed_Analysis.xlsx' in the workback or pre-read plan.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly references 'OTLP_Exporter_Performance_Detailed_Analysis.xlsx' multiple times: in the Context Confirmation section as a related asset and in the workback plan under the 17:00 PDT task for finalizing the review deck, as well as in the Key Files to Link in Pre-Read section.",
+          "source_id": "192d4d91-89b8-4454-8c6b-69a4707b7013"
+        },
+        {
+          "assertion_text": "The response should reference the file 'OTLP_Exporter_Design_Considerations.pdf' as a supporting artifact.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly lists 'OTLP_Exporter_Design_Considerations.pdf' under Related Assets and again in the Key Files to Link in Pre-Read section, confirming it as a supporting artifact.",
+          "source_id": "cfeb959b-61d8-423e-98ef-8d4f8e350c9f"
+        },
+        {
+          "assertion_text": "The response should reference the file 'OTLP_Exporter_Configuration_and_Best_Practices_DeepDive_2025-07-30.pptx' for leveraging slide 8 containing dynamic batch sizing prototype.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly references 'OTLP_Exporter_Configuration_and_Best_Practices_DeepDive_2025-07-30.pptx' and notes that it includes the dynamic batch sizing prototype on slide 8, and also instructs to incorporate content from slide 8 into the final review deck.",
+          "source_id": "f626f6ff-d31b-4377-9a8c-7f89743fbac8"
+        },
+        {
+          "assertion_text": "The response should explicitly describe at least one assumption due to missing details, such as using the August 3 benchmark as final data source or inferred task owners.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists assumptions, including: 'Owners inferred based on roles' and 'No time for new benchmarking; will use 2025-08-03 Benchmark.xslx as final data source.' This satisfies the requirement for describing assumptions due to missing details.",
+          "source_id": "192d4d91-89b8-4454-8c6b-69a4707b7013"
+        },
+        {
+          "assertion_text": "The response should include early agenda-setting tasks (e.g., drafting meeting objectives) scheduled for the morning of August 4.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan includes an early agenda-setting task: at 09:00 PDT on Aug 4, Emory is assigned to draft meeting objectives, which aligns with the assertion for early agenda-setting in the morning.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should contain a risk and mitigation section indicating tight turnaround as a risk.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response includes a 'Risk & Mitigation' section explicitly listing 'Tight turnaround for deck completion' as a risk and provides a mitigation strategy to focus on core slides and skip secondary data.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should state that the prep plan will share pre-read material with attendees via the Teams meeting link.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task at 17:30 PDT to 'Share deck + agenda with attendees via Teams link,' which satisfies the requirement to share pre-read material through the Teams meeting link.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        },
+        {
+          "assertion_text": "The response should clearly distinguish phases (e.g., prep vs finalization) across August 4 tasks.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly separates August 4 tasks into two phases: 'Morning Aug 4 (Now–12:00 PDT) – Prep Phase' and 'Aug 4, 2025 (Today) – Finalization Phase,' clearly distinguishing phases and grouping related tasks.",
+          "source_id": "12f4b32d-49e0-4fe4-93f6-b0e28f30992d"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting '1:1 Deep Dive: Resource Autoscaling & HPA Jenkins Integration'",
+      "total_assertions": 14,
+      "passed_assertions": 14,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should state the correct meeting title '1:1 Deep Dive: Resource Autoscaling & HPA Jenkins Integration' exactly as specified in the event details.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting title as '1:1 Deep Dive: Resource Autoscaling & HPA Jenkins Integration' in the Context Recap section, matching the event details exactly.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should include the scheduled meeting time of July 27, 2025, from 17:00 to 18:00 PDT as shown in the event invite.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as '2025-07-27 (Sunday) 17:00–18:00 PDT' under the Context Recap section, matching the event invite details.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should identify the required attendees as Danille Ciardullo (lod_danillec) and Emory Scherping (lod_emorys).",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists the required attendees as Danille Ciardullo (lod_danillec) and Emory Scherping (lod_emorys) under the 'Attendees' section.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should reproduce agenda items including 'Review CPU/memory request adjustments', 'Validate HPA YAML', 'Draft Jenkins pipeline snippet', and 'Plan validation run & success criteria' as given in the event body.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists the agenda items under the 'Agenda (from event body)' section, including 'Review CPU/memory request adjustments', 'Validate HPA YAML for chaos-monkey deployment', 'Draft Jenkins pipeline snippet for HPA bootstrap', and 'Plan validation run & success criteria'.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should reference the attached file 'Chaos_Resource_Autoscaling_Guide.docx' and the related integration strategy file as part of materials preparation.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists both 'Chaos_Resource_Autoscaling_Guide.docx' and 'Chaos_Pipeline_Integration_Strategy.docx' under Attachments & Related Docs and includes them in the Pre-Read Assembly task, satisfying the requirement for referencing these files in materials preparation.",
+          "source_id": "8869db6a-1b7a-496e-8b0a-343411d1be89"
+        },
+        {
+          "assertion_text": "The response should include explicit task assignments with owners and due times (e.g., Finalize Jenkins Groovy Snippet – Danille by 07:00 PDT).",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The workback plan includes explicit task assignments with owners and due times, such as 'Finalize Jenkins Groovy Snippet – Danille by 07:00 PDT' and similar entries in the task tables for each phase.",
+          "source_id": "a47f4666-dfff-478b-804c-a029aff615f0"
+        },
+        {
+          "assertion_text": "The response should provide backward sequencing of tasks from the meeting start time to at least 8–10 hours before the meeting for initial phases.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan sequences tasks backward from the meeting start (17:00 PDT) and includes initial prep tasks scheduled for 07:00–08:30 PDT, which is 8–10 hours before the meeting, satisfying the requirement.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should specify preparation of a Teams pre-read message including file attachments and agenda summary as part of stakeholder alignment.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan includes a task under Phase 2: 'Compile Agenda + Pre-Reads' and specifies sharing as a single Teams message with subject 'Pre-Read: 1:1 Deep Dive – HPA Integration' before 09:00 PDT, including file attachments and agenda summary.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should explicitly list risk factors such as the aggressive 17-hour prep window and potential HPA target conflicts, along with mitigation strategies.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes a 'Key Dependencies & Risks' section that explicitly lists the aggressive 17-hour timeline and potential HPA target conflict (50% vs 60% CPU), and provides mitigation strategies for both.",
+          "source_id": "a56968c3-1a38-4e6b-9000-2372f3aaf56b"
+        },
+        {
+          "assertion_text": "The response should disclose assumptions regarding attendee availability and lack of additional stakeholders since this is not confirmed in event metadata.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes an explicit assumptions section stating: 'Both Danille and Emory are available online during prep window' and 'No additional stakeholders beyond required attendees,' which addresses attendee availability and lack of extra stakeholders.",
+          "source_id": "1370f9b9-70e4-4760-b963-e7528b2c2d6e"
+        },
+        {
+          "assertion_text": "The response should include dependency notes such as Jenkins snippet completion required before conducting validation dry-run.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly lists under 'Key Dependencies & Risks' that 'Pipeline snippet completion required before meaningful dry-run,' which satisfies the dependency note requirement.",
+          "source_id": "a47f4666-dfff-478b-804c-a029aff615f0"
+        },
+        {
+          "assertion_text": "The response should mention optional validation tasks such as a smoke test of Jenkins parameterization and load generation check by Emory.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response includes an optional validation phase (Phase 3) with tasks: 'Smoke Test Jenkins Stage Parameterization' and 'Load Gen/HPA Behavior Check' assigned to Emory, satisfying the assertion.",
+          "source_id": "a47f4666-dfff-478b-804c-a029aff615f0"
+        },
+        {
+          "assertion_text": "The response should provide concrete deliverables before the meeting, including the updated Jenkinsfile snippet, verified HPA YAML, and Confluence link anchor.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly lists pre-meeting deliverables: 'Jenkinsfile.security.groovy snippet with new params', 'Verified HPA YAML spec aligned with guide', and 'Updated Confluence anchor + shared pre-read packet'. These match the assertion requirements for concrete deliverables.",
+          "source_id": "a47f4666-dfff-478b-804c-a029aff615f0"
+        },
+        {
+          "assertion_text": "The response should clearly mark any unverified parameters (e.g., buffer durations or Slack confirmation) as assumptions if not supported by data.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes an explicit 'Assumptions' section listing items like meeting date confirmation, attendee availability, and pre-read distribution method. This demonstrates transparency for unverified details, satisfying the requirement to mark assumptions.",
+          "source_id": "N/A"
+        }
+      ]
+    },
+    {
+      "utterance": "Help me make a workback plan for the upcoming meeting 'Vault Integration Extended Performance Review'",
+      "total_assertions": 13,
+      "passed_assertions": 13,
+      "pass_rate": 1.0,
+      "results_by_level": {
+        "critical": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "expected": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "pass_rate": 1.0
+        },
+        "aspirational": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0,
+          "pass_rate": 1.0
+        }
+      },
+      "assertion_results": [
+        {
+          "assertion_text": "The response should correctly state the meeting name as 'Vault Integration Extended Performance Review'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting name as 'Vault Integration Extended Performance Review' in the Context Summary section.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should state the meeting date and time as July 29, 2025, 15:00–16:30 PST, which aligns with the event StartDateTime and TimeZone.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states the meeting date and time as 'July 29, 2025, 15:00–16:30 PST' in the Context Summary section, which matches the required StartDateTime and TimeZone.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should identify Nila Tanguma as the meeting organizer.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly states under Context Summary: 'Organizer: Nila Tanguma (you)', clearly identifying Nila Tanguma as the meeting organizer.",
+          "source_id": "lod_nilatanguma"
+        },
+        {
+          "assertion_text": "The response should explicitly include the four agenda topics: 'Review P99 latency distribution updates', 'Assess TTL guard triggers and margin improvements', 'Validate axis-specific jitterParams and backoffFactor map per new groovy fragment', and 'Define final PR merge readiness criteria and production rollout timeline'.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists all four agenda topics under the 'Agenda Topics' section: 1) Review P99 latency distribution updates for all axes, 2) Assess TTL guard triggers and margin improvements, 3) Validate axis-specific jitterParams and backoffFactor map per new groovy fragment, and 4) Define final PR merge readiness criteria and production rollout timeline.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should list the required attendees Jason Adon, Sau Alquesta, Shakia Gencarelli, and Nila Tanguma, and optional attendees Loria Furlan and Shawnna Schelp.",
+          "level": "critical",
+          "passed": true,
+          "explanation": "The response explicitly lists required attendees (Jason Adon, Sau Alquesta, Shakia Gencarelli, Nila Tanguma) and optional attendees (Loria Furlan, Shawnna Schelp) under the Context Summary section.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should explicitly assign each major task to an owner (e.g., Nila Tanguma for reminders and agenda check, Jason Adon for deck loading, Shakia Gencarelli for merge validation).",
+          "level": "critical",
+          "passed": true,
+          "explanation": "Each major task in the workback plan includes an explicit owner in the 'Owner' column (e.g., Nila Tanguma for reminders and agenda check, Jason Adon for deck loading, Shakia Gencarelli for merge validation).",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should schedule circulation of full pre-read files (`Vault_Integration_Workflow_Documentation.pdf`, `vault_backoff_analysis.xlsx`, `VaultIntegration_DetailedMetrics.xlsx`, `vault_backoff_recs.docx`) on July 28, 2025.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The workback plan explicitly includes a task to circulate the full pre-read set (listing all four specified files) on Jul 28, 16:00 PST, satisfying the requirement.",
+          "source_id": "3e12e875-0459-427d-bf30-3db0b7802f7a"
+        },
+        {
+          "assertion_text": "The response should reference the specific attachment `Vault_Backoff_Final_Results.pdf` as a core pre-read, consistent with the meeting invite.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly references `Vault_Backoff_Final_Results.pdf` as a core pre-read in both the Context Summary (Attachments) and in the Phase 1 task to send a reminder email with this attachment.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should include a task to confirm the Teams meeting link and perform a technical check on the day of the meeting.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The plan explicitly includes a task in Phase 1: 'Confirm virtual meeting link & tech check' due Jul 29, 09:00 PST, owned by Nila Tanguma, which satisfies the requirement.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should clearly note that the timeline is extremely tight (around 24 hours) and therefore certain assumptions are made about the availability of finalized artifacts.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response explicitly states '⚠ Timeline is very tight (≈24 hours)' and in the 'Assumptions & Constraints' section notes reliance on existing finalized artifacts due to the tight timeline, satisfying the assertion.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should explicitly state an assumption that no major content rework will occur before the meeting.",
+          "level": "expected",
+          "passed": true,
+          "explanation": "The response includes in the 'Assumptions & Constraints' section: 'Extremely tight timeline → heavy reliance on existing finalized artifacts. Minimal content rework.' This explicitly states the assumption that no major content rework will occur before the meeting.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should include a risk and mitigation section highlighting the possibility that pre-read materials may not be fully reviewed due to the short notice and suggests compensatory action.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response includes a 'Risk & Mitigation' section that explicitly states the risk of pre-read not being fully consumed due to short notice and suggests mitigation by highlighting critical sections in a summary email and dedicating 5 minutes for recap at the start.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        },
+        {
+          "assertion_text": "The response should suggest an optional preparatory action such as a short dry run between key attendees before the meeting.",
+          "level": "aspirational",
+          "passed": true,
+          "explanation": "The response explicitly includes an optional preparatory action: 'Quick 15-min dry run between Jason & Shakia on key metric insights (evening Jul 28)' under the 'Optional Prep' section.",
+          "source_id": "15582bfd-5929-4e9a-b578-dde0df645b17"
+        }
+      ]
+    }
+  ]
+}

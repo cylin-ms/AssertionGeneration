@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Assertion Matches Visualization</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #0078d4;
+            padding-bottom: 10px;
+        }
+        .meeting {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .meeting-header {
+            background: #0078d4;
+            color: white;
+            margin: -20px -20px 20px -20px;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .meeting-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .utterance {
+            background: #e8f4ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #0078d4;
+        }
+        .response {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        .assertions-section {
+            margin-top: 20px;
+        }
+        .assertions-section h3 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+        .assertion {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .assertion-text {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .assertion-level {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        .level-critical {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .level-expected {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .level-aspirational {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .matched-segments {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+        }
+        .matched-segments-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .matched-segment {
+            background: #fffde7;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 3px;
+            font-size: 13px;
+            border-left: 3px solid #ffc107;
+        }
+        .no-matches {
+            color: #999;
+            font-style: italic;
+            font-size: 13px;
+        }
+        .stats {
+            background: #e3f2fd;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Assertion Matches Visualization</h1>
+
+    <div class="stats">
+        <strong>Summary:</strong> 5 meetings, 69 assertions, 
+        43 with matches (62.3%)
+    </div>
+
+
+    <div class="meeting">
+        <div class="meeting-header">
+            <h2>Meeting 1</h2>
+        </div>
+        
+        <div class="utterance">
+            <strong>User Request:</strong><br>
+            Help me make a workback plan for the upcoming meeting &#x27;1:1 Action Items Review&#x27;
+        </div>
+        
+        <div class="response">
+            <strong>Response (with highlights):</strong><br><br>
+            <span class="highlight">Here’s an actionable **workback plan** for the meeting based on the provided context and data.</span>
+
+---
+
+### ✅ **Meeting Details**
+- **Subject:** 1:1 Action Items Review  
+<span class="highlight">- **Date/Time:** July 26, 2025, **2:00 PM – 2:30 PM PST**</span>  
+<span class="highlight">- **Current Date:** July 25, 2025 → ~**24 hours remaining**</span>  
+<span class="highlight">- **Organizer:** Tisa Odonoghue</span>  
+<span class="highlight">- **Attendee:** Nila Tanguma</span>  
+- **Location:** Microsoft Teams Online (Link in event)  
+- **Purpose:** Follow-up review of action items from prior deep dive (on July 24) and related configuration changes  
+
+**Related Context:**  
+<span class="highlight">✔︎ Prior session (“1:1 Deep Dive - Config Secure Defaults &amp; Naming Conventions”) included assigning action items involving:</span>
+<span class="highlight">- JSON Schema updates for `maxReceiveMessageSize`</span>
+- Secure defaults &amp; Vault integration references
+- YAML naming conventions migration  
+<span class="highlight">(Referenced in **Config_Standards_Review_Presentation.pptx** and **Config_Change_Log.xlsx**)</span>  
+
+<span class="highlight">✔︎ Next steps recorded in slides include:</span>
+- Add default 1048576 to JSON Schema (due 7/25)
+<span class="highlight">- Validate Vault KV path schema update (due 7/26)</span>
+- AJV pipeline integration staging  
+
+---
+
+## **Workback Plan for &#x27;1:1 Action Items Review&#x27;**  
+<span class="highlight">*(Meeting: July 26 @ 2:00 PM PST; aggressive 1-day timeline requiring tight execution)*</span>
+
+---
+
+### **Phase 1: Action Status and Agenda Setup**
+| Task                                  | Due Date &amp; Time | Owner                   | Notes |
+|--------------------------------------|-----------------|-------------------------|-------|
+<span class="highlight">| Draft short agenda for review call (focus: each deep dive item + blockers)| **Jul 25, 3:00 PM PST** | Tisa Odonoghue | Based on July 24 notes &amp; presentation |</span>
+| Confirm agenda with Nila via Teams chat/email | **Jul 25, 4:00 PM PST** | Tisa Odonoghue | Align expectations; adjust if needed |
+
+---
+
+### **Phase 2: Action Items Verification**
+| Task                                  | Due Date &amp; Time | Owner                   | Notes |
+|--------------------------------------|-----------------|-------------------------|-------|
+| Check if `maxReceiveMessageSize` default patch merged (PR #128) | **Jul 25, 5:00 PM PST** | Tisa (verify in repo) | Pull from Config_Change_Log.xlsx |
+| Confirm Vault KV pattern schema validation progress | **Jul 25, 5:30 PM PST** | Tisa (verify or ping Jason/Eng team) | Highlight if incomplete |
+| Collect any remaining CI pipeline integration notes | **Jul 25, 6:00 PM PST** | Tisa | From Jenkins/AJV stage test results |
+
+---
+
+### **Phase 3: Material Prep &amp; Distribution**
+| Task                                  | Due Date &amp; Time | Owner                   | Notes |
+|--------------------------------------|-----------------|-------------------------|-------|
+| Prepare **summary doc or quick bullets**: what’s done vs pending | **Jul 25, 7:00 PM PST** | Tisa | Use Config_Change_Log.xlsx + Secure_Defaults_and_Vault_Guide.docx links |
+| Send pre-read (summary + relevant files link) to Nila via Teams/email | **Jul 25, 7:30 PM PST** | Tisa | Include deck or key links if needed |
+
+---
+
+### **Phase 4: Final Checks Before Meeting**
+| Task                                  | Due Date &amp; Time | Owner                   | Notes |
+|--------------------------------------|-----------------|-------------------------|-------|
+| Test Teams link &amp; audio/video setup | **Jul 26, 9:00 AM PST** | Tisa | Check connectivity |
+| Review any overnight changes or new merges in schema branch | **Jul 26, Noon PST** | Tisa | Update bullets if needed |
+
+---
+
+### **Phase 5: Meeting Delivery**
+| Task                                  | Due Date &amp; Time | Owner                   | Notes |
+|--------------------------------------|-----------------|-------------------------|-------|
+| Join meeting promptly | **Jul 26, 2:00 PM PST** | Tisa &amp; Nila | Use Teams link |
+
+---
+
+✅ **Files to Reference**:
+- [Config_Standards_Review_Presentation.pptx](Shared Documents/DevOps/Presentations)
+- [Secure_Defaults_and_Vault_Guide.docx](Shared Documents/DevOps/Guides)
+- [Config_Change_Log.xlsx](Shared Documents/DevOps)
+
+---
+
+<span class="highlight">### **Assumptions**</span>
+- Meeting focus = reviewing July 24 deep dive outcomes and pending schema/CI tasks.
+<span class="highlight">- No additional participants beyond Nila (as per event details).</span>
+- All supporting files already exist in Teams/SharePoint; no creation required, only summarization.
+  
+<span class="highlight">**Risk:** Tight timeline → must draft agenda and pre-read today (July 25).</span>
+
+---
+
+<span class="highlight">#### ✅ Recommended Next Step Right Now:</span>
+Start with **agenda outline** + confirm with Nila before EOD, then verify action item status from repo logs.
+
+---
+        </div>
+        
+        <div class="assertions-section">
+            <h3>Assertions (9)</h3>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should state the meeting date and time as July 26, 2025 at 2:00 PM PST, matching the scheduled event.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Date/Time:** July 26, 2025, **2:00 PM – 2:30 PM PST**</div>
+
+                    <div class="matched-segment">*(Meeting: July 26 @ 2:00 PM PST; aggressive 1-day timeline requiring tight execution)*</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should identify Tisa Odonoghue as the meeting organizer and Nila Tanguma as a required attendee.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Organizer:** Tisa Odonoghue</div>
+
+                    <div class="matched-segment">- **Attendee:** Nila Tanguma</div>
+
+                    <div class="matched-segment">### **Assumptions**</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should include a task to draft and confirm the agenda before end of day July 25 with clear timing.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Draft short agenda for review call (focus: each deep dive item + blockers)| **Jul 25, 3:00 PM PST** | Tisa Odonoghue | Based on July 24 notes &amp; presentation |</div>
+
+                    <div class="matched-segment">Here’s an actionable **workback plan** for the meeting based on the provided context and data.</div>
+
+                    <div class="matched-segment">### **Assumptions**</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should explicitly mention verifying completion of &#x27;maxReceiveMessageSize&#x27; schema patch (PR #128) as part of pre-meeting checks.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">**Risk:** Tight timeline → must draft agenda and pre-read today (July 25).</div>
+
+                    <div class="matched-segment">- JSON Schema updates for `maxReceiveMessageSize`</div>
+
+                    <div class="matched-segment">✔︎ Prior session (“1:1 Deep Dive - Config Secure Defaults &amp; Naming Conventions”) included assigning action items involving:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include a task to confirm Vault KV path schema validation progress before the meeting.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Validate Vault KV path schema update (due 7/26)</div>
+
+                    <div class="matched-segment">Here’s an actionable **workback plan** for the meeting based on the provided context and data.</div>
+
+                    <div class="matched-segment">✔︎ Next steps recorded in slides include:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should outline preparing and sending a pre-read to Nila that includes at minimum Config_Change_Log.xlsx, Config_Standards_Review_Presentation.pptx, and Secure_Defaults_and_Vault_Guide.docx.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">(Referenced in **Config_Standards_Review_Presentation.pptx** and **Config_Change_Log.xlsx**)</div>
+
+                    <div class="matched-segment">**Risk:** Tight timeline → must draft agenda and pre-read today (July 25).</div>
+
+                    <div class="matched-segment">#### ✅ Recommended Next Step Right Now:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should clearly assign an owner for every preparatory task, such as Tisa for agenda drafting and file collation.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Draft short agenda for review call (focus: each deep dive item + blockers)| **Jul 25, 3:00 PM PST** | Tisa Odonoghue | Based on July 24 notes &amp; presentation |</div>
+
+                    <div class="matched-segment">- No additional participants beyond Nila (as per event details).</div>
+
+                    <div class="matched-segment">### **Assumptions**</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should reference assumptions explicitly about scope and resource availability, since grounding data does not confirm every dependency (e.g., no additional attendees beyond Nila).</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- No additional participants beyond Nila (as per event details).</div>
+
+                    <div class="matched-segment">Here’s an actionable **workback plan** for the meeting based on the provided context and data.</div>
+
+                    <div class="matched-segment">### **Assumptions**</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should include a final check task on the morning of July 26 to validate Teams link and any overnight repo changes.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">Here’s an actionable **workback plan** for the meeting based on the provided context and data.</div>
+
+                    <div class="matched-segment">- **Current Date:** July 25, 2025 → ~**24 hours remaining**</div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="meeting">
+        <div class="meeting-header">
+            <h2>Meeting 2</h2>
+        </div>
+        
+        <div class="utterance">
+            <strong>User Request:</strong><br>
+            Help me make a workback plan for the upcoming meeting &#x27;CI/CD Pipeline Optimization Discussion&#x27;
+        </div>
+        
+        <div class="response">
+            <strong>Response (with highlights):</strong><br><br>
+            <span class="highlight">Here’s your **workback plan** for the upcoming meeting based on the provided details:</span>
+
+---
+
+### **Meeting Details**
+<span class="highlight">- **Subject:** CI/CD Pipeline Optimization Discussion</span>  
+<span class="highlight">- **Date &amp; Time:** July 18, 2025, 09:00–09:30 PDT</span>  
+<span class="highlight">- **Organizer:** Shakia Gencarelli (Senior Software Engineer)</span>  
+<span class="highlight">- **Required Attendee:** Nila Tanguma (Engineering Manager)</span>  
+- **Is Online Meeting:** Yes  
+- **Current Time:** July 17, 2025 (request made)  
+<span class="highlight">**→ This means we have ~1 day to prepare.</span> <span class="highlight">Extremely tight timeline – plan is aggressive.**</span>
+
+---
+
+<span class="highlight">## **Workback Plan (From Meeting Day Backwards)**</span>
+
+<span class="highlight">### **Phase 3: Final Pre-Meeting Tasks (Day of Meeting)**</span>
+<span class="highlight">| **Task**                               | **Due**             | **Owner**             | **Notes** |</span>
+|----------------------------------------|----------------------|------------------------|-----------|
+<span class="highlight">| Launch meeting &amp; confirm attendees     | Jul 18, 08:55 PDT   | Shakia                | Start Teams/MS link on time |</span>
+<span class="highlight">| Quick tech check (audio/screenshare)   | Jul 18, 08:50 PDT   | Shakia                | Ensure connectivity |</span>
+
+---
+
+### **Phase 2: Immediate Preparations (Today – Jul 17)**  
+<span class="highlight">_Because time is limited, all tasks must be done today in sequential or parallel steps._</span>
+
+| **Task**                                | **Due**             | **Owner**             | **Notes** |
+|-----------------------------------------|----------------------|------------------------|-----------|
+<span class="highlight">| Draft meeting agenda (high-level objectives: CI/CD bottlenecks, pipeline optimization ideas) | Jul 17, 12:00 PDT | Shakia | Critical to keep meeting focused |</span>
+<span class="highlight">| Share agenda with Nila for quick input  | Jul 17, 12:30 PDT   | Shakia/Nila           | Mark as request for rapid feedback |</span>
+<span class="highlight">| Confirm online meeting link &amp; tech setup| Jul 17, 13:00 PDT   | Shakia                | Test Microsoft Teams link |</span>
+| Pull any relevant pipeline performance metrics / deployment logs | Jul 17, 15:00 PDT | Shakia | Focus on recent deployment cycle data |
+<span class="highlight">| Prepare pre-read summary (1–2 slides in PPT or text) highlighting current CI/CD issues | Jul 17, 17:00 PDT | Shakia | Share via Teams or email |</span>
+| Send materials and final agenda to Nila | Jul 17, 17:30 PDT   | Shakia                | Confirm receipt |
+
+---
+
+### **Phase 1: Optional Review (Late Jul 17)**
+| **Task**                                 | **Due**             | **Owner**             | **Notes** |
+|------------------------------------------|----------------------|------------------------|-----------|
+| Quick sync with Nila (15 min) to ensure alignment | Jul 17, 18:00 PDT | Shakia/Nila | If feasible; otherwise, confirm via email |
+
+---
+
+## **Risk &amp; Assumptions**
+- **Aggressive timeline:** Only one full working day left.
+- **Assumption:** No additional attendees beyond Nila and Shakia.
+- **Mitigation:** Focus tasks on essentials—agenda, minimal yet impactful pre-read, and tech readiness.
+
+---
+
+### ✅ **Summary**
+This plan front-loads the bare essentials today (agenda creation, data gathering, and sharing) to make the limited prep time count. Tomorrow is reserved for quick checks before kickoff.
+
+---
+
+Do you want me to **draft the full agenda now and outline suggested discussion points for the meeting**?  
+Or should I also **prepare a one-slide pre-read structure for you**?
+        </div>
+        
+        <div class="assertions-section">
+            <h3>Assertions (13)</h3>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should specify the exact meeting subject &#x27;CI/CD Pipeline Optimization Discussion&#x27;</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Subject:** CI/CD Pipeline Optimization Discussion</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should state the meeting date and time as July 18, 2025, 09:00–09:30 PDT</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Date &amp; Time:** July 18, 2025, 09:00–09:30 PDT</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should identify Shakia Gencarelli as the organizer and Nila Tanguma as a required attendee</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Organizer:** Shakia Gencarelli (Senior Software Engineer)</div>
+
+                    <div class="matched-segment">- **Required Attendee:** Nila Tanguma (Engineering Manager)</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should include tasks explicitly assigned to Shakia Gencarelli for ownership clarity.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Launch meeting &amp; confirm attendees     | Jul 18, 08:55 PDT   | Shakia                | Start Teams/MS link on time |</div>
+
+                    <div class="matched-segment">| Quick tech check (audio/screenshare)   | Jul 18, 08:50 PDT   | Shakia                | Ensure connectivity |</div>
+
+                    <div class="matched-segment">| Draft meeting agenda (high-level objectives: CI/CD bottlenecks, pipeline optimization ideas) | Jul 17, 12:00 PDT | Shakia | Critical to keep meeting focused |</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should sequence tasks backward from the meeting start time, starting with pre-meeting activities closest to July 18, 09:00 PDT.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">## **Workback Plan (From Meeting Day Backwards)**</div>
+
+                    <div class="matched-segment">Here’s your **workback plan** for the upcoming meeting based on the provided details:</div>
+
+                    <div class="matched-segment">### **Phase 3: Final Pre-Meeting Tasks (Day of Meeting)**</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should include agenda drafting as an explicit task with a due time before meeting day.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Draft meeting agenda (high-level objectives: CI/CD bottlenecks, pipeline optimization ideas) | Jul 17, 12:00 PDT | Shakia | Critical to keep meeting focused |</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include at least one task for artifact preparation such as pre-read materials for CI/CD issues.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Prepare pre-read summary (1–2 slides in PPT or text) highlighting current CI/CD issues | Jul 17, 17:00 PDT | Shakia | Share via Teams or email |</div>
+
+                    <div class="matched-segment">Here’s your **workback plan** for the upcoming meeting based on the provided details:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should provide due times and ownership for each task listed in the plan.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| **Task**                               | **Due**             | **Owner**             | **Notes** |</div>
+
+                    <div class="matched-segment">| Launch meeting &amp; confirm attendees     | Jul 18, 08:55 PDT   | Shakia                | Start Teams/MS link on time |</div>
+
+                    <div class="matched-segment">| Quick tech check (audio/screenshare)   | Jul 18, 08:50 PDT   | Shakia                | Ensure connectivity |</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should explicitly disclose assumptions about stakeholder attendance given only two attendees</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Required Attendee:** Nila Tanguma (Engineering Manager)</div>
+
+                    <div class="matched-segment">- **Organizer:** Shakia Gencarelli (Senior Software Engineer)</div>
+
+                    <div class="matched-segment">Here’s your **workback plan** for the upcoming meeting based on the provided details:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include at least one risk acknowledgment due to the short preparation timeline.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">Extremely tight timeline – plan is aggressive.**</div>
+
+                    <div class="matched-segment">**→ This means we have ~1 day to prepare.</div>
+
+                    <div class="matched-segment">_Because time is limited, all tasks must be done today in sequential or parallel steps._</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should cover a final sync or review step with Nila Tanguma prior to the meeting.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Share agenda with Nila for quick input  | Jul 17, 12:30 PDT   | Shakia/Nila           | Mark as request for rapid feedback |</div>
+
+                    <div class="matched-segment">| Draft meeting agenda (high-level objectives: CI/CD bottlenecks, pipeline optimization ideas) | Jul 17, 12:00 PDT | Shakia | Critical to keep meeting focused |</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should mention confirming online meeting link and technology setup before the meeting day.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">| Confirm online meeting link &amp; tech setup| Jul 17, 13:00 PDT   | Shakia                | Test Microsoft Teams link |</div>
+
+                    <div class="matched-segment">| Quick tech check (audio/screenshare)   | Jul 18, 08:50 PDT   | Shakia                | Ensure connectivity |</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should clearly state that timeline and task ownership assumptions are based on limited remaining time (1 day).</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">**→ This means we have ~1 day to prepare.</div>
+
+                    <div class="matched-segment">Extremely tight timeline – plan is aggressive.**</div>
+
+                    <div class="matched-segment">_Because time is limited, all tasks must be done today in sequential or parallel steps._</div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="meeting">
+        <div class="meeting-header">
+            <h2>Meeting 3</h2>
+        </div>
+        
+        <div class="utterance">
+            <strong>User Request:</strong><br>
+            Help me make a workback plan for the upcoming meeting &#x27;JWT Cache Integration Test Workshop&#x27;
+        </div>
+        
+        <div class="response">
+            <strong>Response (with highlights):</strong><br><br>
+            <span class="highlight">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</span>
+
+---
+
+## ✅ Meeting Details (from enterprise data)
+
+<span class="highlight">- **Subject:** JWT Cache Integration Test Workshop</span>  
+<span class="highlight">- **Date &amp; Time:** July 24, 2025 (Thursday), 10:00 – 11:30 UTC</span>  
+<span class="highlight">- **Organizer:** Shakia Gencarelli (`lod_shakiag`)</span>  
+<span class="highlight">- **Required Attendees:** Rufina (`lod_rufinag`), Emory (`lod_emorys`), Era (`lod_eramanteca`)</span>  
+<span class="highlight">- **Optional Attendees:** Markita (`lod_markitas`), Wilford (`lod_wilfordt`)</span>  
+- **Location:** Microsoft Teams Meeting (link in event)  
+- **Agenda:**  
+    1. <span class="highlight">Overview of integration test architecture &amp; environment setup</span>  
+    2. <span class="highlight">Code walkthrough of `JwtCacheLRU` integration tests in `AuthServiceTest.java`</span>  
+    3. <span class="highlight">Live demo of vault container spin-up &amp; WireMock stubs for secret retrieval</span>  
+    4. Integer overflow guard tests using `AssertThrows`  
+    5. Emitting and validating metrics with Prometheus  
+    6. <span class="highlight">CI pipeline integration: Jenkinsfile &amp; GitHub Actions</span>  
+    7. Q&amp;A and next steps  
+<span class="highlight">- **Key Attachment:** `JWT_Cache_Integration_Test_Plan.docx` (already shared with attendees)</span>
+
+---
+
+## 📅 Timeline Context  
+<span class="highlight">- **Current Time:** July 23, 2025 @ 00:00 (UTC+8) → effectively July 22 evening UTC</span>  
+<span class="highlight">- **Meeting Start:** July 24, 2025 @ 10:00 UTC → about **34 hours left**</span>  
+<span class="highlight">- Any prep must be completed **within the next 1.5 days**.</span> Plan must be **aggressive and focused**.
+
+---
+
+<span class="highlight">## 🔙 Workback Plan (from meeting day backward)</span>
+
+### **Meeting Day – July 24 (UTC)**
+| Time (UTC) | Task | Owner | Notes |
+|------------|------|-------|-------|
+| 09:30 | **Final Tech Check &amp; Environment Readiness** | Emory | Confirm vault container &amp; WireMock endpoints running; smoke test auth-service integration; verify Prometheus scrape. |
+| 09:00 | **Distribution of Final Metrics/Grafana Panels** | Markita | Share updated `JwtCache_Metrics_DeepDive_Slides.pptx` deck link in Teams &amp; email. |
+| 08:30 | **Quick Pre-call in Teams** | Shakia, Emory | Validate that Teams link is accessible, screen-sharing functional; confirm demo scripts in local env. |
+
+---
+
+### **Day Before – July 23**
+| Time (UTC) | Task | Owner | Notes |
+|------------|------|-------|-------|
+| 22:00 | **Dry Run of Integration Test Flow** | Emory | Perform E2E run per `JWT_Cache_Integration_Test_Plan.docx`; validate overflow guard tests &amp; eviction metrics. High priority since leads into core agenda. |
+| 21:00 | **Finalize Slides &amp; Agenda** | Shakia | Validate that all agenda points (Vault setup, Prometheus metrics, Jenkinsfile updates) are covered; include a Q&amp;A placeholder. |
+| 20:00 | **Update Integration Test Plan with labeled metrics** | Rufina | Based on chat (14:12 UTC), add section for gauge label presence verification. Upload revised doc to `EngineeringDocuments/Plans` &amp; notify group in Teams. |
+| 18:30 | **Metrics Visualization Prep** | Markita | Prepare two Grafana panels: (1) total thrash warnings, (2) breakdown by `cache_size` label; update slides. |
+| 17:00 | **Environment Validation for Demo** | Emory | Ensure Vault JWKS simulation returns expected values; check Jenkinsfile hooks in feature branch. |
+| 15:00 | **Attendee Prep Reminder** | Shakia | Send Teams message reminding all to review `JWT_Cache_Integration_Test_Plan.docx`, bring sample test snippets. Attach final agenda summary. |
+| 13:00 | **Review Updated Docs &amp; Assign Action Items** | Shakia | Check Emory &amp; Rufina updates to ensure alignment with workshop objectives. |
+
+---
+
+### **Immediate (Morning of July 23)**
+| Time (UTC) | Task | Owner | Notes |
+|------------|------|-------|-------|
+| By 09:00 | **Confirm Slide Update Workflow** | Shakia &amp; Markita | Ensure deck reflects latest code and metrics, and links correctly to relevant files (`JWT_Cache_Optimization_Workshop_Outcomes.pptx`, Integration Test Plan). |
+| Start of Day | **Sync with Rufina &amp; Emory on outstanding bugs/fixes** | Shakia | BUG-1805 and metrics labeling test coverage tracked; verify progress in Teams channel. |
+
+---
+
+## 🔑 Dependencies &amp; Risks
+- **Risk:** Tight turnaround (&lt;36h). Mitigation: Prioritize core agenda steps, push non-critical content to follow-up.
+- **Dependencies:**  
+    <span class="highlight">- Metrics validation section (Rufina) must be done before dry run.</span>  
+    <span class="highlight">- Grafana slides (Markita) depend on latest Prometheus data.</span>  
+    <span class="highlight">- Environment readiness relies on Emory’s fixes for Vault JWKS and Jenkinsfile.</span>  
+
+---
+
+## ✅ Supporting Files &amp; References
+- [JWT_Cache_Integration_Test_Plan.docx](files/JWT_Cache_Integration_Test_Plan.docx) – primary pre-read  
+- `JwtCache_Metrics_DeepDive_Slides.pptx` – updated deck for metrics visualization  
+<span class="highlight">- Recent chat thread: `jwt-cache-optimization-metrics` – threshold &amp; labeling guidance</span>  
+
+---
+
+### **Assumptions**
+<span class="highlight">- All listed owners are available and have edit rights to shared files.</span>  
+<span class="highlight">- No major code issues discovered during dry run.</span>  
+
+---
+
+<span class="highlight">✅ **Next Step for You (Shakia):**</span>  
+<span class="highlight">Immediately post a Teams message with:</span>  
+<span class="highlight">- Confirmed schedule for today’s prep milestones</span>  
+<span class="highlight">- Reminder to review `JWT_Cache_Integration_Test_Plan.docx`</span>  
+- Assign accountability for tonight’s dry run  
+
+---
+
+Would you like me to **generate a quick Teams message draft** with all timelines and file links for the attendees? Or create an **Outlook task list with reminders** for each owner?
+        </div>
+        
+        <div class="assertions-section">
+            <h3>Assertions (17)</h3>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should state that the &#x27;JWT Cache Integration Test Workshop&#x27; meeting is scheduled for July 24, 2025, 10:00–11:30 UTC.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Date &amp; Time:** July 24, 2025 (Thursday), 10:00 – 11:30 UTC</div>
+
+                    <div class="matched-segment">- **Meeting Start:** July 24, 2025 @ 10:00 UTC → about **34 hours left**</div>
+
+                    <div class="matched-segment">- **Subject:** JWT Cache Integration Test Workshop</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should list Shakia Gencarelli (lod_shakiag) as the organizer of the meeting.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Organizer:** Shakia Gencarelli (`lod_shakiag`)</div>
+
+                    <div class="matched-segment">- All listed owners are available and have edit rights to shared files.</div>
+
+                    <div class="matched-segment">- Reminder to review `JWT_Cache_Integration_Test_Plan.docx`</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should explicitly include required attendees Rufina (lod_rufinag), Emory (lod_emorys), and Era (lod_eramanteca).</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Required Attendees:** Rufina (`lod_rufinag`), Emory (`lod_emorys`), Era (`lod_eramanteca`)</div>
+
+                    <div class="matched-segment">- No major code issues discovered during dry run.</div>
+
+                    <div class="matched-segment">- Metrics validation section (Rufina) must be done before dry run.</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include optional attendees Markita (lod_markitas) and Wilford (lod_wilfordt).</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Optional Attendees:** Markita (`lod_markitas`), Wilford (`lod_wilfordt`)</div>
+
+                    <div class="matched-segment">- Grafana slides (Markita) depend on latest Prometheus data.</div>
+
+                    <div class="matched-segment">Immediately post a Teams message with:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should outline agenda items matching Event details, including integration test architecture overview, code walkthrough of JwtCacheLRU, Vault demo, integer overflow guard tests, metrics validation with Prometheus, CI pipeline integration, and Q&amp;A.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">Overview of integration test architecture &amp; environment setup</div>
+
+                    <div class="matched-segment">Code walkthrough of `JwtCacheLRU` integration tests in `AuthServiceTest.java`</div>
+
+                    <div class="matched-segment">Live demo of vault container spin-up &amp; WireMock stubs for secret retrieval</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should reference the pre-read file &#x27;JWT_Cache_Integration_Test_Plan.docx&#x27; as a supporting artifact.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Key Attachment:** `JWT_Cache_Integration_Test_Plan.docx` (already shared with attendees)</div>
+
+                    <div class="matched-segment">- Recent chat thread: `jwt-cache-optimization-metrics` – threshold &amp; labeling guidance</div>
+
+                    <div class="matched-segment">- Reminder to review `JWT_Cache_Integration_Test_Plan.docx`</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should organize tasks in reverse chronological order relative to the meeting start time (a workback format).</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">## 🔙 Workback Plan (from meeting day backward)</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">- Metrics validation section (Rufina) must be done before dry run.</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include immediate tasks for the morning of July 23 UTC, demonstrating urgency and limited preparation window.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">- Any prep must be completed **within the next 1.5 days**.</div>
+
+                    <div class="matched-segment">- **Current Time:** July 23, 2025 @ 00:00 (UTC+8) → effectively July 22 evening UTC</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should assign each task to a specific owner, such as Shakia, Emory, Rufina, or Markita, reflecting the team from enterprise context.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Metrics validation section (Rufina) must be done before dry run.</div>
+
+                    <div class="matched-segment">- Grafana slides (Markita) depend on latest Prometheus data.</div>
+
+                    <div class="matched-segment">- Environment readiness relies on Emory’s fixes for Vault JWKS and Jenkinsfile.</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should schedule a dry run of the integration test flow for July 23 and assign it to Emory.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Recent chat thread: `jwt-cache-optimization-metrics` – threshold &amp; labeling guidance</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">- **Required Attendees:** Rufina (`lod_rufinag`), Emory (`lod_emorys`), Era (`lod_eramanteca`)</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include a task for Rufina to update the integration test plan to include metrics label verification before the dry run.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- No major code issues discovered during dry run.</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">✅ **Next Step for You (Shakia):**</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include a task for Markita to prepare Grafana panels for metrics visualization (thrash warnings and cache_size breakdown).</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">Immediately post a Teams message with:</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">- Grafana slides (Markita) depend on latest Prometheus data.</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include environment validation tasks for Emory tied to Vault JWKS simulation and Jenkinsfile integrity before the meeting.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Confirmed schedule for today’s prep milestones</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">CI pipeline integration: Jenkinsfile &amp; GitHub Actions</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should include at least one buffer period on the day of the meeting (e.g., a pre-meeting technical check) before the start time.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Metrics validation section (Rufina) must be done before dry run.</div>
+
+                    <div class="matched-segment">- Environment readiness relies on Emory’s fixes for Vault JWKS and Jenkinsfile.</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should acknowledge assumptions regarding participant availability or the absence of unexpected code issues.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">- Reminder to review `JWT_Cache_Integration_Test_Plan.docx`</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should reference supporting files beyond the integration test plan, such as JwtCache_Metrics_DeepDive_Slides.pptx or the workshop outcomes deck, to ensure artifact readiness.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Grafana slides (Markita) depend on latest Prometheus data.</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                    <div class="matched-segment">- **Key Attachment:** `JWT_Cache_Integration_Test_Plan.docx` (already shared with attendees)</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should identify explicit dependencies between tasks, such as Rufina’s metric plan update occurring before Emory’s dry run.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- Recent chat thread: `jwt-cache-optimization-metrics` – threshold &amp; labeling guidance</div>
+
+                    <div class="matched-segment">- No major code issues discovered during dry run.</div>
+
+                    <div class="matched-segment">Here’s a **structured workback plan** for the upcoming **JWT Cache Integration Test Workshop** based on the provided grounding data and current timeline:</div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="meeting">
+        <div class="meeting-header">
+            <h2>Meeting 4</h2>
+        </div>
+        
+        <div class="utterance">
+            <strong>User Request:</strong><br>
+            Help me make a workback plan for the upcoming meeting &#x27;DevSecOps Sprint Governance &amp; Analytics Workshop&#x27;
+        </div>
+        
+        <div class="response">
+            <strong>Response (with highlights):</strong><br><br>
+            Here’s a structured **workback plan** for your upcoming meeting, based on the provided data:
+
+---
+
+## ✅ Context &amp; Key Details
+<span class="highlight">- **Meeting:** *DevSecOps Sprint Governance &amp; Analytics Workshop*</span>
+<span class="highlight">- **Date &amp; Time:** July 31, 2025 (15:00–17:00 UTC)</span>
+- **Organizer:** Shakia Gencarelli *(you)*
+<span class="highlight">- **Attendees:** Emory Scherping, Markita Sitra, Terina Hafen, Keren Guisbert, Ashley Engel, Sau Alquesta *(required)*; Nila Tanguma *(optional)*</span>
+- **Location:** Microsoft Teams Meeting
+- **Agenda (from invite):**
+  - Workshop Overview &amp; Objectives
+  - **Snyk Integration Analytics Deep Dive**
+  - Threshold Adjustment Policy Review
+  - Telemetry &amp; Dashboard Integration Techniques
+  - Action Item Assignment and Timelines
+  - Q&amp;A &amp; Next Steps
+- **Attachments:** `DevSecOps_Governance_Analytics_Workshop_Agenda.pdf`
+- **Related Content (for pre-read):**
+  - `SecureSprint_DevSecOps_Outcomes_Presentation.pdf` *(July 18)*
+  - `SecureSprint_Telemetry_and_Compliance_Dashboard_Presentation.pptx` *(July 24)*
+  - `SecureSprint_Security_Telemetry_Workflow.pdf` *(July 27)*  
+  *(All in Shared Documents linked to past sprint)*
+
+- **Current Date:** July 30, 2025  
+⏳ *Time remaining: ~1 day before meeting → very tight timeline, so this plan compresses deliverables.*
+
+---
+
+## ⚠️ Assumptions
+- No weekend impact; meeting is tomorrow → **intensive preparation required today**.
+- You (Shakia) are meeting organizer and main coordinator.
+- Pre-read distribution is top priority since attendees need context fast.
+
+---
+
+## 📅 Workback Plan (Anchored to July 31, 2025 – 15:00 UTC)
+
+### **Final Pre-Meeting Checks (Meeting Day – July 31)**
+| **Task** | **Due By** | **Owner** | **Notes** |
+|-----------|------------|-----------|-----------|
+| 1. Validate Microsoft Teams meeting link &amp; screen-share permissions | 11:00 UTC | Shakia Gencarelli | Test with a colleague or Emory as backup host |
+| 2. Print/download `DevSecOps_Governance_Analytics_Workshop_Agenda.pdf` for reference | 11:00 UTC | Shakia | Keep in Teams Files too |
+| 3. Quick sync with Emory and Markita for **metrics dashboards** segment roles | 12:00 UTC | Shakia w/ Emory, Markita | Confirm who covers Snyk analytics vs telemetry |
+| 4. Upload consolidated deck (merge key charts from July 18, 24, and 27 presentations if needed) | 13:00 UTC | Shakia | Use `SecureSprint_Telemetry_and_Compliance_Dashboard_Presentation.pptx` as baseline |
+| 5. Tech check and 10-min dry run | 14:15 UTC | All co-presenters | Join Teams early |
+
+---
+
+### **Critical Prep (Today – July 30)**
+| **Task** | **Due By** | **Owner** | **Notes** |
+|-----------|-----------|-----------|-----------|
+| 6. Review `SecureSprint_DevSecOps_Outcomes_Presentation.pdf` &amp; `SecureSprint_Security_Telemetry_Workflow.pdf` | 10:30 UTC | Shakia | Identify key metrics &amp; governance decisions to highlight |
+| 7. Draft **updated talking points** for agenda items | 11:30 UTC | Shakia | Include summary of Snyk integration analytics status and telemetry pipeline diagrams |
+| 8. Prep **Policy Threshold Adjustment summary** (from `DevSecOps_Policy_Threshold_Adjustments.docx`) | 12:30 UTC | Shakia w/ Terina Hafen | Ensure alignment with Confluence schema, highlight Q4 review date (2025-10-01) |
+| 9. Collate **dashboards screenshots** (Grafana/Prometheus metrics) discussed in July 24 workshop | 14:30 UTC | Emory &amp; Markita | Confirm metrics: security_scan_pass/fail, jwt_cache_current_size |
+| 10. Email or Teams **Pre-read Packet** including:  
+   - Agenda PDF  
+   - Links to three key files above  
+   - Brief note on what sections to review | 16:00 UTC | Shakia | Use company SharePoint/Teams link; mark “Critical Pre-read for Tomorrow” |
+| 11. Confirm attendance responses &amp; dependencies | 17:00 UTC | Shakia | Ping Keren &amp; Ashley for action item readiness |
+
+---
+
+## ✅ Additional Notes
+- If time permits, consider creating **“Action Item Tracker” spreadsheet** to capture next steps during session.
+- Any missing PDFs or diagrams? Use `SecureSprint_Security_Telemetry_Workflow.pdf` (architecture diagrams) for telemetry visuals.
+<span class="highlight">- Given extreme time compression, **prioritize ONLY steps 6–10 today.** Items 1–5 occur tomorrow morning.</span>
+
+---
+
+<span class="highlight">### 🔍 Summary of Risk/Constraints:</span>
+- Only **~1 working day left**, so no time for iterative reviews.
+- Must ensure **content accuracy and distribution today** to allow even minimal pre-read.
+
+---
+
+<span class="highlight">📌 **Tip:** I can draft your **pre-read email with embedded file links and talking points** if needed—would you like me to generate that now?</span> <span class="highlight">Or prepare a **one-slide executive summary** for the workshop kickoff?</span>
+        </div>
+        
+        <div class="assertions-section">
+            <h3>Assertions (15)</h3>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should state the meeting date and time as July 31, 2025, 15:00–17:00 UTC, matching the meeting invite.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Date &amp; Time:** July 31, 2025 (15:00–17:00 UTC)</div>
+
+                    <div class="matched-segment">- Given extreme time compression, **prioritize ONLY steps 6–10 today.** Items 1–5 occur tomorrow morning.</div>
+
+                    <div class="matched-segment">### 🔍 Summary of Risk/Constraints:</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should correctly identify the meeting title as &#x27;DevSecOps Sprint Governance &amp; Analytics Workshop&#x27;.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Meeting:** *DevSecOps Sprint Governance &amp; Analytics Workshop*</div>
+
+                    <div class="matched-segment">Or prepare a **one-slide executive summary** for the workshop kickoff?</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should list all required attendees: Emory Scherping, Markita Sitra, Terina Hafen, Keren Guisbert, Ashley Engel, and Sau Alquesta, consistent with the meeting invite.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Attendees:** Emory Scherping, Markita Sitra, Terina Hafen, Keren Guisbert, Ashley Engel, Sau Alquesta *(required)*; Nila Tanguma *(optional)*</div>
+
+                    <div class="matched-segment">📌 **Tip:** I can draft your **pre-read email with embedded file links and talking points** if needed—would you like me to generate that now?</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include Nila Tanguma as an optional attendee, matching the invite.</span>
+
+                <div class="matched-segments">
+                    <div class="matched-segments-label">📍 Supporting segments found:</div>
+
+                    <div class="matched-segment">- **Attendees:** Emory Scherping, Markita Sitra, Terina Hafen, Keren Guisbert, Ashley Engel, Sau Alquesta *(required)*; Nila Tanguma *(optional)*</div>
+
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should incorporate the provided agenda items such as &#x27;Snyk Integration Analytics Deep Dive&#x27; and &#x27;Threshold Adjustment Policy Review&#x27;.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should reference the attachment &#x27;DevSecOps_Governance_Analytics_Workshop_Agenda.pdf&#x27; as part of preparation tasks.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should schedule reviewing &#x27;SecureSprint_DevSecOps_Outcomes_Presentation.pdf&#x27;, &#x27;SecureSprint_Telemetry_and_Compliance_Dashboard_Presentation.pptx&#x27;, and &#x27;SecureSprint_Security_Telemetry_Workflow.pdf&#x27; for pre-read, as these files exist in enterprise data.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should explicitly call out the use of &#x27;DevSecOps_Policy_Threshold_Adjustments.docx&#x27; for policy review steps in the workback plan.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should assign named owners to every task, such as Shakia Gencarelli for agenda distribution and Emory &amp; Markita for metrics screenshots.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should sequence tasks backward from the meeting start time and include clear due times such as 10:30 UTC and 16:00 UTC.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should explicitly state assumptions about compressed timeline or missing weekend impact.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should mention a risk note or constraint section identifying that only one working day remains for preparation.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should schedule distribution of a pre-read email or Teams message linking SharePoint files by 16:00 UTC.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should include a final tech check task on the meeting day to validate Microsoft Teams link and permissions.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should suggest creating an optional Action Item Tracker as a nice-to-have deliverable.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="meeting">
+        <div class="meeting-header">
+            <h2>Meeting 5</h2>
+        </div>
+        
+        <div class="utterance">
+            <strong>User Request:</strong><br>
+            Help me make a workback plan for the upcoming meeting &#x27;OTLP Exporter Q&amp;A Roundtable&#x27;
+        </div>
+        
+        <div class="response">
+            <strong>Response (with highlights):</strong><br><br>
+            Here’s a **workback plan** for your upcoming meeting, built entirely from the grounded enterprise data and your request:
+
+---
+
+## ✅ Meeting Details (From Grounding Data)
+- **Subject:** OTLP Exporter Q&amp;A Roundtable  
+- **Date/Time:** Tuesday, **July 29, 2025**, 16:00–16:30 UTC (8:00–8:30 AM PDT)  
+- **Current Time:** July 29, 2025, 00:00 +08:00 → ~8:00 AM UTC → **Meeting starts in ~8 hours**  
+- **Organizer:** Shakia Gencarelli (you)  
+- **Location:** Online – [Teams Meeting Link](https://teams.microsoft.com/l/meetup-join/19%3ameeting_otlp_qna%40thread.v2/0?context=%7b%7d)  
+- **Attendees:** Shakia Gencarelli, Danille Ciardullo, Emory Scherping, Miss Bjorkman, Ashley Engel, Porsha Brodbeck, Myles Mckoan  
+- **Related Material:**  
+  - **otlp-exporter-performance-study.pdf**  
+    (Performance benchmarks, design insights for OTLP vs Kafka exporters)  
+
+---
+
+## ⚠️ Timeline Context
+- Meeting is **today**, leaving **~8 hours** for preparation.  
+- Plan must be **aggressive** and focused on final readiness.  
+- Dependencies and owners are based on roles and file authorship.
+
+---
+
+## 🔙 Workback Plan (from Meeting @16:00 UTC, backward)
+
+### **Phase 3: Final Hour Prep (14:30–16:00 UTC)**
+| Task | Due | Owner | Notes |
+|------|------|-------|-------|
+| Verify Teams meeting link and screen sharing setup | **15:45 UTC** | Shakia | Ensure audio/video works and file sharing enabled |
+| Load `otlp-exporter-performance-study.pdf` locally | **15:40 UTC** | Shakia | So no delay in sharing during Q&amp;A |
+| Open attendee join status early | **15:50 UTC** | Shakia | Admit participants early to avoid delays |
+| Send **“Starting in 30 min” reminder** in Teams | **15:30 UTC** | Shakia | Include agenda highlights for faster context |
+
+---
+
+### **Phase 2: Pre-Meeting Readiness (13:00–14:30 UTC)**
+| Task | Due | Owner | Notes |
+|------|------|-------|-------|
+| Circulate final agenda outline in Teams chat | **14:00 UTC** | Shakia | Keep it short: “Intro, OTLP performance insights, Open Q&amp;A” |
+| Confirm Porsha &amp; engineering team have access to `otlp-exporter-performance-study.pdf` | **14:00 UTC** | Danille or Shakia | File is stored in *EngineeringDocuments/Research*; permissions already grant “view” |
+| Prepare **key talking points** from the PDF | **13:30 UTC** | Shakia | Highlight: latency vs CPU trade-offs, best practices, hybrid pipelines |
+
+---
+
+### **Phase 1: Immediate Morning Tasks (08:00–13:00 UTC)**  
+| Task | Due | Owner | Notes |
+|------|------|-------|-------|
+| Review `otlp-exporter-performance-study.pdf` fully | **09:00 UTC** | Shakia | Abstract → Recommendations |
+| Post **pre-read doc link** in Teams with “Please skim before meeting” | **08:30 UTC** | Shakia | Use short note: “Focus on section: Results &amp; Discussion” |
+| Check if attendees have recent questions in Teams channel or email | **09:30 UTC** | Emory | Bring any Qs into the agenda |
+
+---
+
+## ✅ Assumptions &amp; Constraints
+- Meeting date/time is confirmed as **July 29 @16:00 UTC** from calendar event.  
+- No dry run possible (time too short).  
+- Agenda will remain **lightweight Q&amp;A-driven**, anchored on performance study findings.  
+- You (Shakia) act as **host and facilitator**.
+
+---
+
+### 🔑 Critical Risks &amp; Mitigation
+- **Risk:** Very short prep window  
+  **Mitigation:** Focus only on key insights; ship agenda in Teams by 14:00 UTC.  
+- **Risk:** Attendees unfamiliar with doc  
+  **Mitigation:** Push pre-read link ASAP and mention critical section.  
+
+---
+
+#### ✅ Quick Launch Links
+- [Meeting Join Link (Teams)](https://teams.microsoft.com/l/meetup-join/19%3ameeting_otlp_qna%40thread.v2/0?context=%7b%7d)  
+- [OTLP Performance Study File](files\\otlp-exporter-performance-study.pdf)  
+
+---
+
+**Do you want me to:**
+1. Auto-create these checkpoints as **Tasks in Microsoft Planner** with reminders?  
+2. Draft the **agenda summary message for Teams** right now?  
+        </div>
+        
+        <div class="assertions-section">
+            <h3>Assertions (15)</h3>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should state the meeting title as &#x27;OTLP Exporter Q&amp;A Roundtable&#x27; exactly as per the calendar event.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should specify the correct meeting start time as July 29, 2025 at 16:00 UTC, matching the event details.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should include the Microsoft Teams join link exactly as provided in the calendar event.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should list Shakia Gencarelli as the meeting organizer and reflect attendee names matching the required attendees in the event.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should reference the file &#x27;otlp-exporter-performance-study.pdf&#x27; as a critical pre-read artifact for the meeting.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should include at least three chronological preparation phases sequenced backward from the meeting time with clear time blocks (e.g., Final Hour Prep, Pre-Meeting Readiness, Immediate Morning Tasks).</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should assign explicit owners to each task, using grounded user names such as Shakia, Danille, or Emory where appropriate.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-critical">CRITICAL</span>
+                <span class="assertion-text">The response should provide concrete deadlines for each task with UTC timestamps aligned to the preparation phases.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include a task to send a &#x27;Starting in 30 min&#x27; reminder message in Teams before the meeting.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include a task for ensuring access to &#x27;otlp-exporter-performance-study.pdf&#x27; for Porsha and the engineering team.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should disclose at least one assumption explicitly, such as stating no dry run is possible due to time constraints.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should include quick-access links for both the Teams join URL and the OTLP performance study file in a dedicated section.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-expected">EXPECTED</span>
+                <span class="assertion-text">The response should acknowledge the meeting&#x27;s purpose as a Q&amp;A focused on OTLP exporter performance based on the related file content.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should include an offer to create tasks in Microsoft Planner as a next-step action.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+            <div class="assertion">
+                <span class="assertion-level level-aspirational">ASPIRATIONAL</span>
+                <span class="assertion-text">The response should include risk identification with mitigation strategies, such as addressing short prep time and unfamiliar documents.</span>
+
+                <div class="matched-segments">
+                    <span class="no-matches">No supporting segments found</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
