@@ -15,7 +15,7 @@ st.set_page_config(
 # Paths to the files
 # Updated to use new format (11_25_output.jsonl) which uses 'justification' instead of 'reasoning'
 OUTPUT_FILE_PATH = os.path.join("docs", "11_25_output.jsonl")  # New format with justification/sourceID
-INPUT_FILE_PATH = os.path.join("docs", "LOD_1121.jsonl")
+INPUT_FILE_PATH = os.path.join("docs", "LOD_1125.jsonl")  # Updated to new context file from Weiwei
 ANNOTATION_SAVE_PATH = os.path.join("docs", "annotations_temp.json")
 ANNOTATION_EXPORT_PATH = os.path.join("docs", "annotated_output.jsonl")
 

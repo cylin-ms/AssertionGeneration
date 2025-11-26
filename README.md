@@ -78,6 +78,28 @@ The new output format includes `sourceID` fields that reference specific entitie
 
 This feature helps quickly verify that assertions reference the correct source entities.
 
+### Context Files & SourceID Recovery
+
+The project uses context files (LOD - LiveOak Data) that contain entity information used to ground assertions. The following context files are available:
+
+| File | Description | SourceID Match Rate |
+|------|-------------|---------------------|
+| `docs/LOD_1125.jsonl` | **Latest** - from Weiwei (Nov 25, 2025) | **99.0%** (300/303) |
+| `docs/LOD_1121.jsonl` | Previous version (Nov 21, 2025) | 67.7% (205/303) |
+
+**SourceID Types Supported:**
+- Entity IDs: `EventId`, `FileId`, `ChatMessageId`, `OnlineMeetingId`, `EmailId`, `ChannelMessageId`, `ChatId`
+- User mailNickNames: e.g., `lod_shakiag`, `lod_nilatanguma`
+- File paths: e.g., `files\VaultIntegration_TechnicalDeepDive.pptx`
+
+To check SourceID recovery with any context file:
+```bash
+python check_sourceid_recovery.py
+```
+
+The script compares sourceIDs in `docs/11_25_output.jsonl` against entity identifiers in both context files and generates a detailed report at `docs/sourceid_recovery_report.json`.
+
+
 ### Data Format
 
 The output file uses the following assertion format:
