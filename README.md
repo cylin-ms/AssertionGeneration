@@ -1,155 +1,95 @@
-# Mira - Assertion Annotation & Evaluation Tool
+# Mira - Assertion Quality Evaluation Tool
 
-**Author:** Chin-Yew Lin  
 **Version:** 2.0 (November 2025)
 
-> **✨ Mira** is a comprehensive annotation and evaluation tool for LLM-generated assertions from meeting contexts. It features GPT-5 JJ automated evaluation with span highlighting, a modern command center UI, rich entity card rendering (Chat, Email, File, User), per-section response annotations, and Azure Key Vault integration for Test Tenant access.
+> **✨ Mira** is a tool for **judges to evaluate the quality of LLM-generated assertions**. Judges review each assertion to determine if it is well-grounded in the meeting context and appropriately evaluates workback plan quality. GPT-5 JJ evaluation results are provided as **hints** to help judges quickly identify supporting evidence and make informed decisions.
 
-### 🙏 Acknowledgments
+---
+
+## 🙏 Acknowledgments
 
 | Contributor | Contribution |
 |-------------|--------------|
-| **Weiwei Cui** | Meeting Context Data (LOD - LiveOak Data) generation, assertion methodology documentation |
+| **Weiwei Cui** | Meeting Context Data (LOD - LiveOak Data), assertion methodology documentation |
 | **Kening Ren** | Workback Plan response generation, assertions with justification and sourceID |
-| **Chin-Yew Lin** | Mira annotation tool, GPT-5 JJ evaluation integration, documentation |
+| **Chin-Yew Lin** | Mira annotation tool, GPT-5 JJ evaluation experiment, documentation |
 
 ---
 
 ## 📋 Table of Contents
 
 1. [Overview](#overview)
-2. [Key Features](#key-features-november-2025)
-3. [Quick Start](#quick-start)
-4. [Detailed Walkthrough](#detailed-walkthrough)
-5. [GPT-5 JJ Automated Evaluation](#gpt-5-jj-automated-evaluation)
-6. [Entity Card Rendering](#entity-card-rendering)
-7. [Annotation Workflow](#annotation-workflow)
-8. [Data Formats](#data-formats)
-9. [Project Structure](#project-structure)
-10. [Scripts Reference](#scripts-reference)
-11. [Recent Changes](#recent-changes-november-2025)
+2. [Quick Start](#quick-start)
+3. [Judge's Guide: Evaluating Assertions](#judges-guide-evaluating-assertions)
+4. [Using GPT-5 Results as Hints](#using-gpt-5-results-as-hints)
+5. [Meeting Context & Entity Cards](#meeting-context--entity-cards)
+6. [Optional: Response Annotations](#optional-response-annotations)
+7. [Entity Card Rendering](#entity-card-rendering)
+8. [Annotation Workflow](#annotation-workflow)
+9. [Data Formats](#data-formats)
+10. [Project Structure](#project-structure)
+11. [Scripts Reference](#scripts-reference)
+12. [Recent Changes](#recent-changes-november-2025)
 
 ---
 
 ## Overview
 
-This project provides tools for generating assertions from meeting contexts and verifying them against generated workback plans. It includes:
+### What is Mira?
 
-- **GPT-5 JJ Automated Evaluation**: Evaluates assertions with supporting span extraction and confidence scoring
-- **Mira Annotation Tool**: Interactive Streamlit UI to explore, annotate, and evaluate assertion quality
-- **Entity Card Rendering**: Rich display for Chat, Email, File, User, and ChannelMessage entities
-- **Offline Matching**: Find evidence in responses that supports specific assertions
+Mira is designed for **judges to evaluate assertion quality**. Each assertion is a statement about what a good workback plan response should contain, grounded in the meeting context data.
 
-### Data Pipeline
+**Your task as a judge:**
+1. Review each assertion and its justification
+2. Check if the assertion is well-grounded in the meeting context (using the sourceID link)
+3. Determine if the assertion is a good quality assertion (correct, clear, verifiable)
+4. Mark the assertion as correct or incorrect, with optional notes
 
-The dataset flows through the following pipeline:
+### Data Sources
 
-1. **Meeting Context Data** (by Weiwei Cui)
-   - LOD (LiveOak Data) files containing meeting entities: Events, Files, Emails, Chats, Users
-   - Utterances representing user requests for workback plans
-   - See [DATA_GENERATION.md](docs/DATA_GENERATION.md) for details
+| Data | Created By | Description |
+|------|------------|-------------|
+| **Meeting Context (LOD)** | Weiwei Cui | Entities (Events, Files, Emails, Chats, Users) that provide context |
+| **Workback Plan Response** | Kening Ren | LLM-generated response to user's request |
+| **Assertions** | Kening Ren | Statements about what the response should contain, with justification and sourceID |
+| **GPT-5 Evaluation** | Chin-Yew Lin | Automated evaluation results to help judges (used as hints) |
 
-2. **Workback Plan Generation** (by Kening Ren)
-   - LLM-generated responses to user utterances
-   - Assertions with justification and sourceID linking to specific entities
-   - 103 meetings with 1,395 total assertions
+### How GPT-5 Results Help Judges
 
-3. **Assertion Evaluation** (by Chin-Yew Lin)
-   - GPT-5 JJ automated evaluation with 96.2% pass rate
-   - Supporting span extraction with confidence scores
-   - Mira annotation tool for human review
+The GPT-5 JJ evaluation was conducted as an **experiment** to:
+1. **Verify real-world applicability**: Test how assertions might be used to automatically evaluate workback plan quality
+2. **Provide hints for judges**: Help judges quickly find supporting evidence in the response
+3. **Speed up annotation**: Judges can use GPT-5's pass/fail status and evidence spans as starting points
 
-The methodology for deriving assertions is documented in [deriving_assertions_workback_plan.md](docs/deriving_assertions_workback_plan.md) by Weiwei Cui.
+> **Note:** GPT-5 results are **hints only**. Judges should make their own independent judgment about assertion quality.
 
-### System Components
+### Dataset Statistics
 
-| Component | Description | Script |
-|-----------|-------------|--------|
-| **GPT-5 Evaluation** | Automated PASS/FAIL evaluation with supporting spans | `evaluate_assertions_gpt5.py` |
-| **Mira Annotation Tool** | Interactive UI for annotation and review | `mira.py` |
-| **Assertion Matching** | Find evidence for assertions | `compute_assertion_matches.py` |
-| **HTML Reports** | Generate detailed HTML reports | `show_assertion_details.py` |
-
-## Key Features (November 2025)
-
-### 🤖 GPT-5 JJ Automated Evaluation (NEW!)
-- **Automated PASS/FAIL Assessment**: Each assertion is evaluated against the response using GPT-5 JJ
-- **Supporting Span Extraction**: Identifies exact text spans that support or contradict each assertion
-- **Confidence Scoring**: Each span has a confidence score (0.0-1.0) for color intensity
-- **Section Attribution**: Spans include which response section they appear in (e.g., "Task Details", "Timeline")
-- **Visual Highlighting**: Color-coded evidence boxes (green=supports, red=contradicts)
-- **Verification Checkboxes**: Annotators can verify or reject GPT-5's explanations and evidence
-
-### 📊 Current Evaluation Results
-- **103 meetings** evaluated with GPT-5 JJ
-- **1,395 assertions** total
-- **96.2% pass rate** (1,342 passed, 53 failed)
-- **100% span coverage** - all assertions have supporting_spans
-
-### 🎛️ Command Center UI
-- **Consolidated Controls**: Judge name, Filter, Save/Export, Reset all in one place at the top
-- **Real-time Progress**: Visual progress bar with meeting and assertion statistics
-- **Smart Filtering**: Filter meetings by annotation status (All, Fully Judged, Partially Judged, Not Started)
-
-### 👤 Modern User Card
-- **Meeting Organizer Display**: Shows organizer name with clickable Azure Key Vault link
-- **Avatar with Initials**: Visual avatar displaying user initials
-- **Quick Access**: User ID and Mail Nickname displayed in the card
-
-### 📧 Rich Entity Card Rendering (NEW!)
-- **Chat Entity Cards**: Two-column layout with chat info + message bubbles
-- **Email Entity Cards**: Metadata on left, body preview on right
-- **File Entity Cards**: Metadata + content preview with tabs (Preview/Raw)
-- **ChannelMessage Cards**: Message info with content display
-- **User Entity Cards**: Avatar, name, ID, and Azure Key Vault link
-- **Generic Fallback**: Shows Content/Body if present for any entity type
-
-### 📝 Response Annotations
-- **Per-Section Annotations**: Expandable annotation boxes for each section of the generated response
-- **Section Parsing**: Automatically detects markdown headers, numbered items, and bold headers
-- **Overall Comments**: Dedicated text area for overall response assessment
-- **Annotation Indicators**: Visual indicators (📝) show which sections have been annotated
-
-### ✅ Assertion Evaluation
-- **GPT-5 Status Icons**: ✅/❌ indicators from GPT-5 JJ evaluation in assertion headers
-- **Judgment Tracking**: Mark assertions as judged with "📋 Judged" checkbox
-- **Correctness Marking**: Check/uncheck assertions as correct or incorrect
-- **Confidence Levels**: Indicate confidence in your judgment
-- **Notes & Revisions**: Add explanatory notes and suggest improved assertion text
-
-### 🔗 Entity Linking
+- **103 meetings** with workback plan requests
+- **1,395 assertions** total (~13.5 per meeting)
+- **GPT-5 evaluation**: 96.2% pass rate (used as reference, not ground truth)
 - **SourceID Navigation**: Click "🔗 View Entity" to jump to referenced entities
 - **Visual Highlighting**: Linked entities highlighted with green banner
 - **Azure Key Vault Integration**: Direct links to user credentials in Test Tenant
+
+---
 
 ## Quick Start
 
 ### Prerequisites
 
 - Python 3.10+
-- Microsoft corporate account (for GPT-5 JJ authentication via MSAL broker)
+- Microsoft corporate account (for Azure Key Vault access)
 
 ### Setup
 
-1. **Clone the repository**
-
-    ```bash
-    git clone https://github.com/cylin-ms/AssertionGeneration.git
-    cd AssertionGeneration
-    ```
-
-2. **Create and activate a virtual environment**
-
-    ```bash
-    python -m venv .venv
-    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-    ```
-
-3. **Install dependencies**
-
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+git clone https://github.com/cylin-ms/AssertionGeneration.git
+cd AssertionGeneration
+python -m venv .venv
+.venv\Scripts\activate  # On Windows
+pip install -r requirements.txt
+```
 
 ### Launch Mira
 
@@ -157,194 +97,169 @@ The methodology for deriving assertions is documented in [deriving_assertions_wo
 streamlit run mira.py
 ```
 
-Open your browser to `http://localhost:8501` after starting the app.
+Open your browser to `http://localhost:8501`.
 
 ---
 
-## Detailed Walkthrough
+## Judge's Guide: Evaluating Assertions
 
-This section provides a complete walkthrough of the Mira annotation tool interface.
+This is the **primary task** for judges using Mira.
 
-### Interface Overview
+### What You're Evaluating
 
-#### 1. Command Center (Top Bar)
+Each assertion is a statement like:
+> "The response should include the project deadline of December 15th mentioned in the kickoff meeting."
 
-The command center provides all controls in one consolidated row:
+Your job is to determine if this assertion is **well-formed and correctly grounded** in the meeting context.
 
-| Control | Description |
-|---------|-------------|
-| **👤 Judge** | Enter your name for attribution in exports |
-| **🔍 Filter** | Filter meetings by status: All, Fully Judged, Partially Judged, Not Started |
-| **💾 Save** | Save annotations to temp file |
-| **📤 Export** | Export all annotations to `docs/annotated_output.jsonl` |
-| **🔄 Reset Current** | Reset annotations for current meeting |
-| **🗑️ Reset All** | Reset all annotations (with confirmation) |
+### Step-by-Step Annotation Process
 
-#### 2. Progress Metrics
+#### Step 1: Select a Meeting
 
-Visual progress tracking below the command center:
+1. Click on a meeting in the sidebar (📕 = Not Started, 📙 = Partially Done, 📗 = Complete)
+2. Enter your name in the "👤 Judge" field at the top
 
-- **Progress Bar**: Visual completion percentage
-- **📗 Complete**: Fully judged meetings count
-- **📙 Partial**: Partially judged meetings count
-- **✓ Confident**: Confident judgment count
-- **? Unsure**: Uncertain judgment count
+#### Step 2: Review the Assertion
 
-#### 3. Sidebar (Meeting Navigation)
+For each assertion card:
 
-- **Meeting List**: Click to select a meeting
-- **Status Indicators**: 📗 Complete | 📙 Partial | 📕 Not Started
-- **Meeting Count**: Shows filtered/total meetings
+1. **Read the assertion text** - What is it claiming the response should contain?
+2. **Check the level** - Is it Critical, Expected, or Aspirational?
+3. **Review the justification** - Why was this assertion created?
 
-#### 4. Main Content Area
+#### Step 3: Verify Grounding in Meeting Context
 
-The main area displays the selected meeting with multiple sections:
+1. **Look for the sourceID** - Each assertion links to a specific entity
+2. **Click "🔗 View Entity"** - This expands the Meeting Context and highlights the source
+3. **Review the source entity** - Does the assertion correctly reference this data?
+4. **Check if the assertion is accurate** - Is the claim factually correct based on the entity?
 
-**Meeting Header**
-- Purple gradient badge with meeting number
-- Meeting title with matching purple styling
-- Event ID for reference
-- "View Meeting Details" button for full event info
+#### Step 4: Make Your Judgment
 
-**🗣️ Utterance**
-- The user's request displayed at the top
+| Checkbox | Meaning |
+|----------|---------|
+| **✅ This assertion is correct** | The assertion is well-grounded and accurate |
+| **🎯 Confident in judgment** | You're sure about your decision |
+| **📋 Judged** | You've finished reviewing this assertion |
 
-**📋 Meeting Context Available** (Highlighted Banner)
-- Blue gradient banner prominently alerting judges to available source data
-- Contains all entities (Events, Files, Emails, Chats) used to generate assertions
-- **Essential for verifying assertion accuracy!**
+#### Step 5: Add Notes (Optional)
 
-**📥 View Meeting Context** (Expandable Section)
-- **Meeting Organizer**: Card with avatar, name, and Azure Key Vault link
-- **Entity Cards**: Rich display of all source entities:
-  - 📅 Events: Meeting details, attendees, locations
-  - 📄 Files: Document content with Preview/Raw tabs
-  - 💬 Chats: Message history as styled bubbles
-  - ✉️ Emails: Subject, recipients, body preview
-  - 👤 Users: User info with Test Tenant access
-- **SourceID Linking**: Click "🔗 View Entity" on assertions to jump here
+- **Note**: Explain why an assertion is incorrect or problematic
+- **Revision**: Suggest improved assertion text
 
-**🤖 Generated Response**
-- Full LLM response with per-section annotation dropdowns
-- Click sections to add annotations
-- Overall response annotation box
+### Completion Criteria
 
-**✅ Assertions**
-- Assertion cards with GPT-5 evaluation status
-- Expandable details with annotation controls
-- Supporting evidence with confidence bars
+| Status | Icon | Meaning |
+|--------|------|---------|
+| **Fully Judged** | 📗 | All assertions in the meeting have been reviewed |
+| **Partially Judged** | 📙 | Some assertions reviewed, but not all |
+| **Not Started** | 📕 | No assertions reviewed yet |
 
-### Annotation Workflow & Completion Criteria
+### Saving Your Work
 
-#### How to Annotate an Assertion
-
-1. **Expand** the assertion card by clicking on it
-2. **Review GPT-5 Evaluation**: Check the ✅/❌ status and supporting evidence
-3. **Verify GPT-5 Results**: Uncheck evidence boxes if you disagree with GPT-5
-4. **Mark correctness**: Check "✅ This assertion is correct" (or uncheck if incorrect)
-5. **Set confidence**: Check "🎯 Confident in judgment" (or uncheck if unsure)
-6. **Add notes** (optional): Explain why the assertion is incorrect
-7. **Suggest revision** (optional): Provide improved assertion text
-8. **Mark as judged**: The "📋 Judged" checkbox is auto-checked when you make a judgment
-
-#### Meeting Completion Status
-
-| Status | Icon | Criteria |
-|--------|------|----------|
-| **Fully Judged** | 📗 | ALL assertions have `is_judged: True` |
-| **Partially Judged** | 📙 | At least 1 assertion judged, but not all |
-| **Not Started** | 📕 | No assertions have been judged yet |
+- **Auto-save**: Annotations save automatically
+- **Manual save**: Click "💾 Save" anytime
+- **Export**: Click "📤 Export" to create `docs/annotated_output.jsonl`
 
 ---
 
-## GPT-5 JJ Automated Evaluation
+## Using GPT-5 Results as Hints
 
-Mira integrates with GPT-5 JJ (via Microsoft Substrate API) for automated assertion evaluation.
+GPT-5 JJ was used to automatically evaluate assertions against the response. These results are provided as **hints** to help you work faster.
 
-### How It Works
+### How GPT-5 Results Appear
 
-For each assertion, GPT-5 JJ:
-1. **Evaluates** whether the response satisfies the assertion (PASS/FAIL)
-2. **Extracts** supporting text spans from the response
-3. **Assigns** confidence scores (0.0-1.0) to each span
-4. **Identifies** which response section contains each span
-5. **Provides** reasoning for the evaluation
+Each assertion shows a GPT-5 status in its header:
+- **✅** = GPT-5 determined the assertion PASSED (response satisfies it)
+- **❌** = GPT-5 determined the assertion FAILED (response doesn't satisfy it)
 
-### Running GPT-5 Evaluation
+### What GPT-5 Provides
 
-```powershell
-# Evaluate all meetings (resume from checkpoint)
-python evaluate_assertions_gpt5.py
+When you expand an assertion, you'll see:
 
-# Evaluate specific range
-python evaluate_assertions_gpt5.py --start 0 --end 103
+1. **Pass/Fail Status**: GPT-5's automated judgment
+2. **Explanation**: Why GPT-5 made this decision
+3. **Supporting Spans**: Exact quotes from the response that GPT-5 identified as evidence
+4. **Confidence Scores**: How confident GPT-5 is about each piece of evidence
+5. **Section Attribution**: Which part of the response contains each span
 
-# Evaluate single meeting by index (0-based)
-python evaluate_assertions_gpt5.py --meeting 5
+### How to Use GPT-5 Hints
 
-# Evaluate by UI meeting number (1-based)
-python evaluate_assertions_gpt5.py --meeting-num 7
+| GPT-5 Says | What You Should Do |
+|------------|-------------------|
+| ✅ PASSED | Use the supporting spans to quickly verify the assertion is good |
+| ❌ FAILED | Check if GPT-5 is correct, or if the assertion is actually fine |
+| High confidence spans | These are likely reliable evidence |
+| Low confidence spans | Review these more carefully |
 
-# Force reprocess all meetings
-python evaluate_assertions_gpt5.py --force
-```
+### Verifying or Rejecting GPT-5 Results
 
-### Evaluation Results
+You can **verify or reject** GPT-5's findings:
 
-Results are saved to `docs/assertion_scores.json`:
+1. **Explanation checkbox**: Uncheck if you disagree with GPT-5's reasoning
+2. **Span checkboxes**: Uncheck individual evidence spans you think are wrong
+3. Rejected items appear crossed out in the UI
 
-```json
-{
-  "timestamp": "2025-11-26T22:35:47",
-  "num_samples": 103,
-  "overall_stats": {
-    "total_assertions": 1395,
-    "passed_assertions": 1342,
-    "pass_rate": 96.2
-  },
-  "meetings": [
-    {
-      "utterance": "Help me make a workback plan...",
-      "assertion_results": [
-        {
-          "assertion_text": "The response should include...",
-          "level": "critical",
-          "passed": true,
-          "explanation": "The response correctly includes...",
-          "supporting_spans": [
-            {
-              "text": "exact quote from response",
-              "section": "Task Details",
-              "confidence": 0.95,
-              "supports": true,
-              "start_index": 150,
-              "end_index": 220
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
+> **Remember:** GPT-5 results are hints, not ground truth. Your judgment is what matters!
 
-### Viewing Results in Mira
+### GPT-5 Experiment Statistics
 
-1. **Header Icons**: Each assertion shows ✅ (passed) or ❌ (failed) in the expander header
-2. **Evaluation Section**: Expand an assertion to see the full GPT-5 evaluation
-3. **Supporting Evidence**: Color-coded boxes show extracted spans
-   - 🟢 Green = supports the assertion (confidence-based intensity)
-   - 🔴 Red = contradicts the assertion
-4. **Confidence Bars**: Visual progress bars show span confidence
-5. **Section Attribution**: Each span shows which response section it came from
-6. **Verification**: Check/uncheck boxes to accept/reject GPT-5's explanations
+The GPT-5 evaluation was run on all 103 meetings:
+- **1,395 assertions** evaluated
+- **96.2% pass rate** (1,342 passed, 53 failed)
+- **100% span coverage** (all assertions have supporting evidence)
 
-### Rate Limiting
+---
 
-The evaluation script includes built-in rate limiting:
-- 1 second between assertions
-- 3 seconds between meetings
-- 10 seconds between batches (10 meetings/batch)
+## Meeting Context & Entity Cards
+
+The Meeting Context contains all the source data used to generate assertions.
+
+### Why Meeting Context Matters
+
+Assertions reference specific entities via `sourceID`. To verify an assertion, you need to check the actual entity it references.
+
+### Accessing Meeting Context
+
+1. **Notice the blue banner**: "📋 Meeting Context Available"
+2. **Click the expander**: "📥 View Meeting Context"
+3. **Browse entities**: Each entity type has a rich card display
+
+### Entity Card Types
+
+| Entity Type | Icon | What It Shows |
+|-------------|------|---------------|
+| **Event** | 📅 | Meeting subject, time, attendees, location |
+| **File** | 📄 | Document name, content preview with tabs |
+| **Chat** | 💬 | Chat messages displayed as bubbles |
+| **Email** | ✉️ | Subject, recipients, body preview |
+| **User** | 👤 | Name, avatar, Azure Key Vault link |
+| **ChannelMessage** | 📢 | Teams message with content |
+
+### SourceID Linking
+
+When you click "🔗 View Entity" on an assertion:
+1. The Meeting Context section auto-expands
+2. The referenced entity is highlighted with a green banner
+3. You can verify if the assertion correctly references the entity
+
+---
+
+## Optional: Response Annotations
+
+Judges can **optionally** annotate the generated response itself. This is **not mandatory**.
+
+### Per-Section Annotations
+
+The response is parsed into sections. For each section:
+1. Click "📝 Add annotation for this section"
+2. Enter comments about that specific section
+
+### Overall Response Comment
+
+At the bottom, there's an "📋 Overall Response Annotation" box for general comments about the response quality.
+
+> **Note:** Response annotations are optional and separate from assertion evaluation.
 
 ---
 
@@ -410,7 +325,7 @@ For any entity type with a `Content` or `Body` field, automatically displays the
 
 ## Annotation Workflow
 
-This section describes the complete annotation workflow using Mira.
+This section describes the complete annotation workflow using Mira for **evaluating assertion quality**.
 
 ### Step 1: Launch Mira and Set Up
 
@@ -424,7 +339,7 @@ streamlit run mira.py
 
 ### Step 2: Review Meeting Context (Important!)
 
-> **📋 Note:** The Meeting Context section contains all the source data that was used to generate the assertions. Reviewing this context is essential for accurate annotation.
+> **📋 Note:** The Meeting Context section contains all the source data that was used to generate the assertions. Reviewing this context is **essential** for verifying assertion quality.
 
 1. **Notice the Banner**: A prominent blue banner "📋 Meeting Context Available" alerts you to the available context
 2. **Expand Meeting Context**: Click "📥 View Meeting Context (Entities, Organizer, Source Data)"
@@ -440,36 +355,42 @@ streamlit run mira.py
 5. **Check SourceID Links**: When you click "🔗 View Entity" on an assertion, it will:
    - Auto-expand the Meeting Context section
    - Highlight the linked entity with a green banner
-   - Help you verify if the assertion is correctly grounded
+   - Help you verify if the assertion is correctly grounded in source data
 
-### Step 3: Review GPT-5 Evaluation
+### Step 3: Evaluate Each Assertion (Primary Task)
 
-Before making manual judgments, review the automated evaluation:
+**This is the main task.** For each assertion, you need to determine if it's a high-quality assertion:
 
-1. **Check Header Icons**: Look for ✅ (passed) or ❌ (failed) in assertion headers
-2. **Expand an Assertion**: Click to see full GPT-5 evaluation
-3. **Review Evidence**: Check the color-coded supporting spans
-4. **Verify or Reject**: Uncheck boxes if you disagree with GPT-5's findings
+1. **Expand the Assertion**: Click to see full details
+2. **Use GPT-5 Results as Hints** (if available):
+   - Look for ✅ (passed) or ❌ (failed) icons in the header
+   - Review the color-coded supporting spans
+   - These are **hints to assist your decision**, not final verdicts
+   - You can verify or reject GPT-5's findings using the checkboxes
+3. **Review the Assertion Content**:
+   - Is the assertion clear and specific?
+   - Is it properly grounded in the source data (check SourceID)?
+   - Is the level (critical/expected/aspirational) appropriate?
+   - Is the justification reasonable?
+4. **Make Your Judgment**:
+   - Toggle "✅ This assertion is correct" based on your evaluation
+   - Check "🎯 Confident in judgment" if you're sure
+   - Check "📋 Judged" to mark as reviewed
+5. **Add Notes/Revision** (optional): Explain issues or suggest improvements
 
-### Step 4: Annotate the Response
+### Step 4: Annotate the Response (Optional)
+
+> **Note:** Response annotation is **optional**. The primary goal is evaluating assertions.
+
+If you choose to also evaluate the response:
 
 1. **Read Section Content**: Review each section of the LLM response
 2. **Add Section Annotations**: Click "📝 Add annotation for this section"
 3. **Add Overall Comment**: Use "📋 Overall Response Annotation" at the bottom
 
-### Step 5: Evaluate Each Assertion
+### Step 5: Track Progress & Export
 
-1. **Expand the Assertion**: Click to see full details
-2. **Review GPT-5 Evaluation**: Check PASS/FAIL status and evidence
-3. **Verify Evidence**: Accept or reject GPT-5's supporting spans
-4. **Check Correctness**: Toggle "✅ This assertion is correct"
-5. **Set Confidence**: Check "🎯 Confident in judgment" if you're sure
-6. **Mark as Judged**: Check "📋 Judged" when done
-7. **Add Notes/Revision** (optional): Explain issues or suggest improvements
-
-### Step 6: Track Progress & Export
-
-- **Progress Bar**: Shows completion percentage
+- **Progress Bar**: Shows assertion completion percentage
 - **Status Indicators**: 📗 Complete | 📙 Partial | 📕 Not Started
 - **Auto-Save**: Annotations save to `docs/annotations_temp.json`
 - **Export**: Click "📤 Export" to create `docs/annotated_output.jsonl`
@@ -480,21 +401,22 @@ For each assertion, the following data is captured:
 
 | Field | Description |
 |-------|-------------|
-| `is_good` | Whether the assertion is correct (true/false) |
+| `is_good` | Whether the assertion is a high-quality assertion (true/false) |
 | `is_confident` | Whether you're confident in your judgment |
 | `is_judged` | Whether the assertion has been reviewed |
 | `note` | Optional explanation or comments |
 | `revision` | Optional suggested improvement |
 | `gpt5_verification` | GPT-5 explanation/span verification status |
 
-### Best Practices
+### Best Practices for Assertion Evaluation
 
 1. **Judge all assertions** in a meeting to mark it as "Fully Judged"
-2. **Use the filter** to find meetings that need attention
-3. **Save frequently** - click "💾 Save" or wait for auto-save
-4. **Export before closing** - click "📤 Export"
+2. **Use the Meeting Context** to verify assertion grounding
+3. **Use GPT-5 results as hints** - they can help you quickly identify potential issues
+4. **Don't blindly trust GPT-5** - always verify with source data
 5. **Add notes** for incorrect assertions to explain why they fail
-6. **Verify GPT-5 results** - the AI isn't always right!
+6. **Save frequently** - click "💾 Save" or wait for auto-save
+7. **Export before closing** - click "📤 Export"
 
 ---
 
