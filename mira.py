@@ -128,14 +128,14 @@ def get_annotation(utterance, assertion_idx):
     return {}
 
 
-def set_annotation(utterance, assertion_idx, is_good=None, revision=None, original=None, note=None, is_confident=None, is_judged=None):
+def set_annotation(utterance, assertion_idx, is_good=None, revision=None, original=None, note=None, is_confident=None, is_judged=None, gpt5_verification=None):
     """Set annotation for a specific assertion."""
     if utterance not in st.session_state.annotations:
         st.session_state.annotations[utterance] = {}
     
     key = str(assertion_idx)
     if key not in st.session_state.annotations[utterance]:
-        st.session_state.annotations[utterance][key] = {"is_good": True, "revision": "", "original": "", "note": "", "is_confident": True, "is_judged": False}
+        st.session_state.annotations[utterance][key] = {"is_good": True, "revision": "", "original": "", "note": "", "is_confident": True, "is_judged": False, "gpt5_verification": {}}
     
     if is_good is not None:
         st.session_state.annotations[utterance][key]["is_good"] = is_good
@@ -149,6 +149,8 @@ def set_annotation(utterance, assertion_idx, is_good=None, revision=None, origin
         st.session_state.annotations[utterance][key]["is_confident"] = is_confident
     if is_judged is not None:
         st.session_state.annotations[utterance][key]["is_judged"] = is_judged
+    if gpt5_verification is not None:
+        st.session_state.annotations[utterance][key]["gpt5_verification"] = gpt5_verification
     
     st.session_state.annotation_modified = True
 
@@ -168,6 +170,16 @@ def set_response_annotation(utterance, section_key, note):
     st.session_state.annotation_modified = True
 
 
+def slugify(text):
+    """Convert text to a URL-safe slug for anchor IDs."""
+    import re
+    # Remove special characters, convert to lowercase, replace spaces with hyphens
+    slug = re.sub(r'[^\w\s-]', '', text.lower())
+    slug = re.sub(r'[\s_]+', '-', slug)
+    slug = re.sub(r'-+', '-', slug).strip('-')
+    return slug or 'section'
+
+
 def parse_response_sections(response_text):
     """Parse the response text into sections based on markdown headers or paragraphs."""
     if not response_text:
@@ -178,7 +190,7 @@ def parse_response_sections(response_text):
     # Try to split by markdown headers (##, ###, etc.) or numbered sections
     # Pattern: lines starting with #, or numbered items like "1.", "2.", etc.
     lines = response_text.split('\n')
-    current_section = {"title": "Introduction", "content": [], "start_line": 0}
+    current_section = {"title": "Introduction", "content": [], "start_line": 0, "anchor_id": "section-0-introduction"}
     
     for i, line in enumerate(lines):
         stripped = line.strip()
@@ -192,7 +204,7 @@ def parse_response_sections(response_text):
             
             # Extract title (remove # symbols)
             title = stripped.lstrip('#').strip()
-            current_section = {"title": title, "content": [], "start_line": i}
+            current_section = {"title": title, "content": [], "start_line": i, "anchor_id": f"section-{len(sections)}-{slugify(title)}"}
         
         # Check for numbered sections like "1." "2." etc at the start
         elif stripped and len(stripped) > 2 and stripped[0].isdigit() and stripped[1] == '.':
@@ -203,7 +215,7 @@ def parse_response_sections(response_text):
             
             # Use the numbered line as title
             title = stripped[:50] + "..." if len(stripped) > 50 else stripped
-            current_section = {"title": title, "content": [stripped], "start_line": i}
+            current_section = {"title": title, "content": [stripped], "start_line": i, "anchor_id": f"section-{len(sections)}-{slugify(title)}"}
         
         # Check for bold section headers like **Section Name**
         elif stripped.startswith('**') and '**' in stripped[2:]:
@@ -215,7 +227,7 @@ def parse_response_sections(response_text):
             # Extract title from bold text
             end_idx = stripped.index('**', 2)
             title = stripped[2:end_idx]
-            current_section = {"title": title, "content": [stripped], "start_line": i}
+            current_section = {"title": title, "content": [stripped], "start_line": i, "anchor_id": f"section-{len(sections)}-{slugify(title)}"}
         
         else:
             current_section["content"].append(line)
@@ -376,7 +388,7 @@ def build_entity_index(input_item):
         if user_id:
             index[user_id] = ('User', 0, user_data)
         # Also index by common ID patterns
-        for key in ['id', 'userId', 'userPrincipalName']:
+        for key in ['id', 'userId', 'userPrincipalName', 'MailNickName']:
             if key in user_data and user_data[key]:
                 index[user_data[key]] = ('User', 0, user_data)
     
@@ -389,7 +401,7 @@ def build_entity_index(input_item):
         id_fields = [
             'FileId', 'ChatId', 'EventId', 'ChannelMessageId', 'ChannelId',
             'ChannelMessageReplyId', 'OnlineMeetingId', 'EmailId', 'MessageId',
-            'id', 'Id', 'ID', 'entityId', 'EntityId'
+            'id', 'Id', 'ID', 'entityId', 'EntityId', 'MailNickName'
         ]
         for field in id_fields:
             if field in entity and entity[field]:
@@ -467,32 +479,46 @@ def render_user_card(item):
     display_name = item.get('DisplayName', 'Unknown')
     job_title = item.get('JobTitle', '')
     department = item.get('Department', '')
-    email = item.get('MailNickName', '')
-    phone = item.get('PhoneNumber', '')
-    location = item.get('OfficeLocation', '')
-    manager = item.get('Manager', '')
+    email = item.get('MailNickName', '') or item.get('Email', '') or ''
+    phone = item.get('PhoneNumber', '') or ''
+    location = item.get('OfficeLocation', '') or ''
+    manager = item.get('Manager', '') or ''
     
     # Address
-    address = item.get('Address', {})
-    full_address = f"{address.get('Street', '')}, {address.get('City', '')}, {address.get('State', '')} {address.get('PostalCode', '')}" if address else ""
+    address = item.get('Address', {}) or {}
+    if address:
+        addr_parts = [p for p in [address.get('Street', ''), address.get('City', ''), 
+                                   address.get('State', ''), address.get('PostalCode', '')] if p]
+        full_address = ', '.join(addr_parts) if addr_parts else 'Not specified'
+    else:
+        full_address = 'Not specified'
 
+    # Build info rows only for non-empty values
+    info_rows = []
+    if email:
+        info_rows.append(f"<strong>📧 Email:</strong> {email}")
+    if phone:
+        info_rows.append(f"<strong>📞 Phone:</strong> {phone}")
+    if manager:
+        info_rows.append(f"<strong>👔 Manager:</strong> {manager}")
+    
+    left_col = "<br>".join(info_rows) if info_rows else "<em style='color: #999;'>No contact info available</em>"
+    
     html = f"""
     <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; color: #333;">
         <div style="display: flex; justify-content: space-between; align-items: start;">
             <div>
                 <h3 style="margin: 0; color: #2c3e50;">{display_name}</h3>
-                <p style="margin: 2px 0; color: #7f8c8d; font-style: italic;">{job_title} {f"| {department}" if department else ""}</p>
+                <p style="margin: 2px 0; color: #7f8c8d; font-style: italic;">{job_title or 'Unknown role'}{f" | {department}" if department else ""}</p>
             </div>
             <div style="text-align: right; font-size: 0.9em; color: #7f8c8d;">
-                <div>{location}</div>
+                <div>{location or ''}</div>
             </div>
         </div>
         <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9em;">
             <div>
-                <strong>📧 Email:</strong> {email}<br>
-                <strong>📞 Phone:</strong> {phone}<br>
-                <strong>👔 Manager:</strong> {manager}
+                {left_col}
             </div>
             <div>
                 <strong>📍 Address:</strong><br>
@@ -506,7 +532,7 @@ def render_user_card(item):
 def render_generic_card(item):
     """Render a generic card for other entities."""
     # Filter out complex objects for the summary view
-    simple_fields = {k: v for k, v in item.items() if isinstance(v, (str, int, float, bool)) and k not in ['type', 'Content']}
+    simple_fields = {k: v for k, v in item.items() if isinstance(v, (str, int, float, bool)) and k not in ['type', 'Content', 'Body']}
     
     # Create a markdown table
     md = "| Field | Value |\n|---|---|\n"
@@ -514,6 +540,114 @@ def render_generic_card(item):
         md += f"| **{k}** | {v} |\n"
     
     st.markdown(md)
+    
+    # Show Content or Body if present
+    content = item.get('Content') or item.get('Body')
+    if content:
+        st.markdown("#### 📝 Content")
+        with st.container(border=True):
+            st.markdown(content)
+
+def render_channel_message_card(item, key_suffix=""):
+    """Render a card for ChannelMessage or ChannelMessageReply entities."""
+    content = item.get('Content', 'No content available.')
+    
+    # Filter simple fields for metadata (exclude complex objects and content)
+    exclude_fields = ['type', 'Content', 'Mentions', 'Reactions', 'Attachments']
+    simple_fields = {k: v for k, v in item.items() if isinstance(v, (str, int, float, bool)) and k not in exclude_fields}
+    
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("#### 📢 Message Info")
+        md = "| Field | Value |\n|---|---|\n"
+        for k, v in simple_fields.items():
+            md += f"| **{k}** | {v} |\n"
+        st.markdown(md)
+        
+    with col2:
+        st.markdown("#### 💬 Content")
+        with st.container(border=True):
+            if content and content.strip():
+                st.markdown(content)
+            else:
+                st.caption("No content to preview.")
+
+def render_chat_card(item, key_suffix=""):
+    """Render a card for Chat entities with messages."""
+    chat_messages = item.get('ChatMessages', [])
+    
+    # Filter simple fields for metadata
+    exclude_fields = ['type', 'ChatMessages']
+    simple_fields = {k: v for k, v in item.items() if isinstance(v, (str, int, float, bool)) and k not in exclude_fields}
+    
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("#### 💬 Chat Info")
+        md = "| Field | Value |\n|---|---|\n"
+        for k, v in simple_fields.items():
+            md += f"| **{k}** | {v} |\n"
+        # Also show member count
+        members = item.get('Members', [])
+        if members:
+            md += f"| **Members** | {len(members)} participants |\n"
+        st.markdown(md)
+        
+    with col2:
+        st.markdown(f"#### 📨 Messages ({len(chat_messages)})")
+        with st.container(border=True, height=400):
+            if chat_messages:
+                for i, msg in enumerate(chat_messages):
+                    sender = msg.get('From', 'Unknown')
+                    content = msg.get('Content', '')
+                    timestamp = msg.get('SentDateTime', '')
+                    
+                    # Style each message as a chat bubble
+                    st.markdown(f"""
+                    <div style="background-color: #f0f2f6; padding: 10px; border-radius: 10px; margin-bottom: 8px;">
+                        <div style="font-weight: bold; color: #1f77b4; font-size: 0.85em;">👤 {sender}</div>
+                        <div style="margin: 5px 0;">{content}</div>
+                        <div style="font-size: 0.75em; color: #888; text-align: right;">{timestamp}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                st.caption("No messages in this chat.")
+
+def render_email_card(item, key_suffix=""):
+    """Render a card for Email entities."""
+    body = item.get('Body', 'No body content.')
+    
+    # Filter simple fields for metadata
+    exclude_fields = ['type', 'Body', 'ToRecipients', 'CcRecipients', 'BccRecipients', 'Attachments']
+    simple_fields = {k: v for k, v in item.items() if isinstance(v, (str, int, float, bool)) and k not in exclude_fields}
+    
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("#### ✉️ Email Info")
+        md = "| Field | Value |\n|---|---|\n"
+        for k, v in simple_fields.items():
+            md += f"| **{k}** | {v} |\n"
+        
+        # Show recipients
+        to_recipients = item.get('ToRecipients', [])
+        cc_recipients = item.get('CcRecipients', [])
+        if to_recipients:
+            to_list = ', '.join([r.get('Recipient', str(r)) if isinstance(r, dict) else str(r) for r in to_recipients])
+            md += f"| **To** | {to_list} |\n"
+        if cc_recipients:
+            cc_list = ', '.join([r.get('Recipient', str(r)) if isinstance(r, dict) else str(r) for r in cc_recipients])
+            md += f"| **Cc** | {cc_list} |\n"
+        st.markdown(md)
+        
+    with col2:
+        st.markdown("#### 📝 Body")
+        with st.container(border=True):
+            if body and body.strip():
+                st.markdown(body)
+            else:
+                st.caption("No body content.")
 
 def render_file_card(item, key_suffix=""):
     """Render a card for File entities with content side-by-side."""
@@ -900,7 +1034,9 @@ An assertion is **automatically marked as judged** when you:
             include_item = True
         
         if include_item:
-            options.append(f"{i+1}. {status} {subject}")
+            # Format with prominent meeting ID: "#6 📕 Subject"
+            meeting_id = i + 1
+            options.append(f"#{meeting_id} {status} {subject[:35]}")
             filtered_indices.append(i)
     
     # Show count of filtered results
@@ -919,8 +1055,8 @@ An assertion is **automatically marked as judged** when you:
         index=0
     )
     
-    # Extract index from the selected option string "1. ✅ Subject..."
-    selected_index = int(selected_option.split('.')[0]) - 1
+    # Extract index from the selected option string "#6 📕 Subject..."
+    selected_index = int(selected_option.split()[0].replace('#', '')) - 1
 
     # === RESET CONFIRMATION DIALOGS (triggered from command center) ===
     if st.session_state.get('show_reset_current_confirm', False):
@@ -1013,8 +1149,19 @@ An assertion is **automatically marked as judged** when you:
             unsafe_allow_html=True
         )
     with col_title:
+        # Display title with same color scheme as meeting number badge
+        st.markdown(
+            f"""<div style='background: linear-gradient(135deg, #667eea, #764ba2); 
+                        color: white; padding: 8px 16px; border-radius: 8px; 
+                        font-size: 1.5em; font-weight: bold;
+                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+                        text-align: left;'>
+                📅 {subject}
+            </div>""",
+            unsafe_allow_html=True
+        )
         # Make the title clickable to show meeting card
-        if st.button(f"📅 {subject}", key=f"meeting_title_{selected_index}", help="Click to view meeting details", use_container_width=True):
+        if st.button("View Meeting Details", key=f"meeting_title_{selected_index}", help="Click to view meeting details"):
             st.session_state["show_meeting_card"] = True
         st.caption(f"Event ID: `{meeting_event_id}`")
     
@@ -1240,15 +1387,21 @@ An assertion is **automatically marked as judged** when you:
                                 st.markdown(header, unsafe_allow_html=True)
                                 
                                 if view_mode == "Card View":
-                                    # Render user card or generic card based on entity type
+                                    # Render entity card based on type
                                     if etype == "User":
                                         render_user_card(item)
                                     elif etype == "File":
                                         render_file_card(item, key_suffix=f"{etype}_{i}")
+                                    elif etype == "Chat":
+                                        render_chat_card(item, key_suffix=f"{etype}_{i}")
+                                    elif etype == "Email":
+                                        render_email_card(item, key_suffix=f"{etype}_{i}")
+                                    elif etype in ["ChannelMessage", "ChannelMessageReply"]:
+                                        render_channel_message_card(item, key_suffix=f"{etype}_{i}")
                                     else:
                                         render_generic_card(item)
-                                        with st.expander("Raw JSON"):
-                                            st.json(item)
+                                    with st.expander("Raw JSON"):
+                                        st.json(item)
                                 else:
                                     st.json(item, expanded=json_expanded)
             else:
@@ -1285,9 +1438,9 @@ An assertion is **automatically marked as judged** when you:
                 
                 # Section container
                 with st.container(border=True):
-                    # Section header with annotation indicator
+                    # Section header with annotation indicator and light blue background
                     note_indicator = "📝" if has_note else ""
-                    st.markdown(f"**{section_idx + 1}. {section_title}** {note_indicator}")
+                    st.markdown(f'<div style="background-color: #e3f2fd; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px;"><strong>{section_idx + 1}. {section_title}</strong> {note_indicator}</div>', unsafe_allow_html=True)
                     
                     # Apply highlighting to section content
                     display_content = section_content
@@ -1421,7 +1574,9 @@ An assertion is **automatically marked as judged** when you:
                         evidence_icon = ""  # No icon for old format (text sources)
                     
                     # Get GPT-5 JJ score for this assertion
-                    gpt5_score = get_assertion_score(utterance_text, assertion.get('text', ''))
+                    # Use OUTPUT utterance (not INPUT) because scores are indexed by output data
+                    output_utterance = output_item.get('utterance', '')
+                    gpt5_score = get_assertion_score(output_utterance, assertion.get('text', ''))
                     if gpt5_score:
                         gpt5_icon = "✅" if gpt5_score.get('passed', False) else "❌"
                     else:
@@ -1551,6 +1706,147 @@ An assertion is **automatically marked as judged** when you:
                         
                         st.markdown("---")
                         
+                        # === GPT-5 JJ EVALUATION SECTION ===
+                        if gpt5_score:
+                            st.markdown("##### 🤖 GPT-5 JJ Evaluation")
+                            passed = gpt5_score.get('passed', False)
+                            # Support both old format (reasoning) and new format (explanation)
+                            gpt5_explanation = gpt5_score.get('explanation', gpt5_score.get('reasoning', 'No explanation provided.'))
+                            
+                            if passed:
+                                st.success(f"✅ **PASSED** - GPT-5 JJ determined this assertion is correct")
+                            else:
+                                st.error(f"❌ **FAILED** - GPT-5 JJ determined this assertion is incorrect")
+                            
+                            # GPT-5 Explanation with verification checkbox
+                            st.markdown("**GPT-5 Explanation:**")
+                            
+                            # Get current verification state from annotation
+                            gpt5_ann = ann.get('gpt5_verification', {})
+                            explanation_verified = gpt5_ann.get('explanation_verified', True)  # Default checked
+                            
+                            exp_col1, exp_col2 = st.columns([0.1, 0.9])
+                            with exp_col1:
+                                new_exp_verified = st.checkbox(
+                                    "✓",
+                                    value=explanation_verified,
+                                    key=f"gpt5_exp_verify_{selected_index}_{i}",
+                                    help="Uncheck if you disagree with GPT-5's explanation"
+                                )
+                                if new_exp_verified != explanation_verified:
+                                    current_gpt5_ann = ann.get('gpt5_verification', {})
+                                    current_gpt5_ann['explanation_verified'] = new_exp_verified
+                                    set_annotation(utterance_text, i, gpt5_verification=current_gpt5_ann)
+                                    save_annotations()
+                            with exp_col2:
+                                if new_exp_verified:
+                                    st.info(gpt5_explanation)
+                                else:
+                                    st.warning(f"~~{gpt5_explanation}~~ *(Rejected by annotator)*")
+                            
+                            # Display supporting spans with confidence-based color shading
+                            supporting_spans = gpt5_score.get('supporting_spans', [])
+                            if supporting_spans:
+                                st.markdown("**Supporting Evidence from Response:**")
+                                
+                                for span_idx, span in enumerate(supporting_spans):
+                                    span_text = span.get('text', '')
+                                    section = span.get('section', '')
+                                    confidence = span.get('confidence', 0.5)
+                                    supports = span.get('supports', True)
+                                    
+                                    # Get verification state for this span
+                                    spans_verified = gpt5_ann.get('spans_verified', {})
+                                    span_verified = spans_verified.get(str(span_idx), True)  # Default checked
+                                    
+                                    # Calculate color based on confidence and support/contradict
+                                    if supports:
+                                        if confidence >= 0.8:
+                                            bg_color = "#d4edda"
+                                            border_color = "#155724"
+                                            text_color = "#155724"
+                                            badge_bg = "#28a745"
+                                        elif confidence >= 0.5:
+                                            bg_color = "#e8f5e9"
+                                            border_color = "#2e7d32"
+                                            text_color = "#1b5e20"
+                                            badge_bg = "#43a047"
+                                        else:
+                                            bg_color = "#f1f8e9"
+                                            border_color = "#558b2f"
+                                            text_color = "#33691e"
+                                            badge_bg = "#7cb342"
+                                        icon = "✅"
+                                    else:
+                                        if confidence >= 0.8:
+                                            bg_color = "#f8d7da"
+                                            border_color = "#721c24"
+                                            text_color = "#721c24"
+                                            badge_bg = "#dc3545"
+                                        elif confidence >= 0.5:
+                                            bg_color = "#ffebee"
+                                            border_color = "#c62828"
+                                            text_color = "#b71c1c"
+                                            badge_bg = "#e53935"
+                                        else:
+                                            bg_color = "#fff3e0"
+                                            border_color = "#e65100"
+                                            text_color = "#bf360c"
+                                            badge_bg = "#fb8c00"
+                                        icon = "❌"
+                                    
+                                    # Grey out if not verified
+                                    if not span_verified:
+                                        bg_color = "#f5f5f5"
+                                        border_color = "#9e9e9e"
+                                        text_color = "#757575"
+                                        badge_bg = "#9e9e9e"
+                                    
+                                    conf_pct = int(confidence * 100)
+                                    rejected_label = " *(Rejected)*" if not span_verified else ""
+                                    # Section badge with light background
+                                    if section:
+                                        section_badge = f' 📍 <span style="background-color: #e3f2fd; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">{section}</span>'
+                                    else:
+                                        section_badge = ""
+                                    
+                                    # Use container with checkbox
+                                    with st.container():
+                                        # Verification checkbox on its own line
+                                        new_span_verified = st.checkbox(
+                                            f"Evidence #{span_idx + 1} verified",
+                                            value=span_verified,
+                                            key=f"gpt5_span_verify_{selected_index}_{i}_{span_idx}",
+                                            help="Uncheck if this evidence is incorrect"
+                                        )
+                                        if new_span_verified != span_verified:
+                                            current_gpt5_ann = ann.get('gpt5_verification', {})
+                                            if 'spans_verified' not in current_gpt5_ann:
+                                                current_gpt5_ann['spans_verified'] = {}
+                                            current_gpt5_ann['spans_verified'][str(span_idx)] = new_span_verified
+                                            set_annotation(utterance_text, i, gpt5_verification=current_gpt5_ann)
+                                            save_annotations()
+                                        
+                                        # Status line with section info
+                                        status_text = f"{icon} {'Supports' if supports else 'Contradicts'}{rejected_label} | **{conf_pct}% confidence**{section_badge}"
+                                        st.markdown(status_text, unsafe_allow_html=True)
+                                        
+                                        # Quote box - use appropriate Streamlit component based on verification
+                                        if span_verified:
+                                            if supports:
+                                                st.success(f'"{span_text}"')
+                                            else:
+                                                st.error(f'"{span_text}"')
+                                        else:
+                                            st.warning(f'~~"{span_text}"~~ *(Rejected)*')
+                                        
+                                        # Confidence bar using progress
+                                        st.progress(confidence, text=f"Confidence: {conf_pct}%")
+                                        
+                                        st.markdown("")  # Spacer
+                            
+                            st.markdown("---")
+                        
                         # === JUSTIFICATION/REASONING CONTENT ===
                         # Handle both old format (reasoning) and new format (justification)
                         reasoning = get_assertion_reasoning(assertion)
@@ -1573,6 +1869,9 @@ An assertion is **automatically marked as judged** when you:
                                     if entity_info:
                                         entity_type, entity_idx, entity_data = entity_info
                                         
+                                        # Use actual entity type from data if available (more accurate than lookup type)
+                                        actual_entity_type = entity_data.get('type', entity_type)
+                                        
                                         # Get entity display info
                                         entity_name = (entity_data.get('FileName') or 
                                                       entity_data.get('Subject') or 
@@ -1580,8 +1879,8 @@ An assertion is **automatically marked as judged** when you:
                                                       entity_data.get('DisplayName') or 
                                                       entity_data.get('displayName') or
                                                       'Unknown')
-                                        icon = ENTITY_STYLES.get(entity_type, {}).get('icon', '📦')
-                                        style_color = ENTITY_STYLES.get(entity_type, {}).get('color', '#6c757d')
+                                        icon = ENTITY_STYLES.get(actual_entity_type, {}).get('icon', '📦')
+                                        style_color = ENTITY_STYLES.get(actual_entity_type, {}).get('color', '#6c757d')
                                         
                                         # Render beautifully formatted inline entity card (matching LOD card style)
                                         with st.container(border=True):
@@ -1591,22 +1890,31 @@ An assertion is **automatically marked as judged** when you:
                                                     padding: 10px 15px; margin: -1rem -1rem 1rem -1rem; 
                                                     border-bottom: 2px solid {style_color}; border-radius: 8px 8px 0 0;'>
                                                     <span style='font-size: 1.5em;'>{icon}</span>
-                                                    <strong style='font-size: 1.2em; color: {style_color}; margin-left: 8px;'>{entity_type}</strong>
+                                                    <strong style='font-size: 1.2em; color: {style_color}; margin-left: 8px;'>{actual_entity_type}</strong>
                                                     <span style='float: right; background: #d4edda; color: #155724; padding: 2px 8px; 
                                                         border-radius: 12px; font-size: 0.75em;'>✓ Matched</span>
                                                 </div>""",
                                                 unsafe_allow_html=True
                                             )
                                             
-                                            # Entity name as title
-                                            st.markdown(f"### {entity_name}")
-                                            st.caption(f"🔗 `{source}`")
+                                            # For User entities, the card already shows the name, so just show source link after
+                                            # For other entities, show name as title first
+                                            if actual_entity_type != 'User':
+                                                st.markdown(f"### {entity_name}")
+                                                st.caption(f"🔗 `{source}`")
                                             
                                             # Render card content based on entity type (like LOD cards)
-                                            if entity_type == 'User':
+                                            if actual_entity_type == 'User':
                                                 render_user_card(entity_data)
-                                            elif entity_type == 'File':
+                                                st.caption(f"🔗 `{source}`")
+                                            elif actual_entity_type == 'File':
                                                 render_file_card(entity_data, key_suffix=f"inline_{i}")
+                                            elif actual_entity_type == 'Chat':
+                                                render_chat_card(entity_data, key_suffix=f"inline_{i}")
+                                            elif actual_entity_type == 'Email':
+                                                render_email_card(entity_data, key_suffix=f"inline_{i}")
+                                            elif actual_entity_type in ['ChannelMessage', 'ChannelMessageReply']:
+                                                render_channel_message_card(entity_data, key_suffix=f"inline_{i}")
                                             else:
                                                 # For other entity types, render a generic styled card
                                                 render_generic_card(entity_data)
@@ -1616,9 +1924,9 @@ An assertion is **automatically marked as judged** when you:
                                                 st.json(entity_data)
                                         
                                         # Optional: Button to jump to full entity in Input Context
-                                        if st.button(f"🔗 View in Input Context", key=f"link_entity_{selected_index}_{i}", help=f"Jump to {entity_type} in Input Context"):
+                                        if st.button(f"🔗 View in Input Context", key=f"link_entity_{selected_index}_{i}", help=f"Jump to {actual_entity_type} in Input Context"):
                                             st.session_state["linked_entity_id"] = source
-                                            st.session_state["linked_entity_type"] = entity_type
+                                            st.session_state["linked_entity_type"] = actual_entity_type
                                             st.session_state["linked_entity_data"] = entity_data
                                             st.session_state["expand_input_context"] = True
                                             st.rerun()
